@@ -1,6 +1,7 @@
 package com.github.invizible.catdogtion.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -24,6 +25,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Autowired
   private DataSource dataSource;
 
+  @Value("${security.authoritiesByUsernameQuery}")
+  private String authoritiesByUsernameQuery;
+
   @Override
   protected void configure(HttpSecurity http) throws Exception {
   }
@@ -33,6 +37,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     auth
       .jdbcAuthentication()
       .dataSource(dataSource)
+      .authoritiesByUsernameQuery(authoritiesByUsernameQuery)
       .passwordEncoder(new BCryptPasswordEncoder());
   }
 }

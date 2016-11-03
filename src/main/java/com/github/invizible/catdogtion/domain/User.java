@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -33,5 +35,9 @@ public class User {
   private Boolean enabled;
 
   @ManyToMany
+  @JoinTable(name = "users_authorities",
+    joinColumns = @JoinColumn(name = "user_id"),
+    inverseJoinColumns =  @JoinColumn(name = "authority_id")
+  )
   private Set<Role> roles = new HashSet<>();
 }
