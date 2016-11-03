@@ -1,6 +1,10 @@
 # Catdogtion
 Cats and dogs auction written in Angular 2 and Spring Boot
 
+## Spring Boot
+
+gradle bootRun - for deploying the application
+
 ## Angular 2
 
 This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.17.
