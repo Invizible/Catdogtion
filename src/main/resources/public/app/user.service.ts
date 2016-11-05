@@ -32,9 +32,7 @@ export class UserService {
     this.http.post('api/logout', "").subscribe(
       () => {
         // to get a new csrf token call the api
-        this.http.options("api").subscribe(
-          callback
-        );
+        this.http.options("api").subscribe(callback);
       }
     );
   }
