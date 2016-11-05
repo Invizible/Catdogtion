@@ -1,6 +1,8 @@
 package com.github.invizible.catdogtion.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,10 +25,22 @@ public class User {
   @GeneratedValue
   private Long id;
 
+  @NotEmpty
   @Size(min = 2, max = 30)
   @Column(unique = true, nullable = false)
   private String username;
 
+  @NotEmpty
+  @Size(min = 1, max = 50)
+  @Column(nullable = false)
+  private String firstName;
+
+  @NotEmpty
+  @Size(min = 1, max = 50)
+  @Column(nullable = false)
+  private String lastName;
+
+  @JsonIgnore
   @Column(nullable = false, length = 60)
   private String password;
 

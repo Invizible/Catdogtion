@@ -43,6 +43,7 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-security')
 	compile('org.springframework.boot:spring-boot-starter-web')
   	compile('org.springframework.boot:spring-boot-devtools')
+	compile('org.springframework.security:spring-security-data')
 	runtime('com.h2database:h2')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }

@@ -3,15 +3,20 @@ package com.github.invizible.catdogtion.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.data.repository.query.spi.EvaluationContextExtension;
+import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 /**
@@ -28,8 +33,31 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Value("${security.authoritiesByUsernameQuery}")
   private String authoritiesByUsernameQuery;
 
+  @Bean
+  public EvaluationContextExtension securityExtension() {
+    return new SecurityEvaluationContextExtension();
+  }
+
   @Override
   protected void configure(HttpSecurity http) throws Exception {
+    http
+      .csrf()
+      .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+    .and()
+      .formLogin()
+      .loginProcessingUrl("/api/authentication")
+      .successHandler((request, response, authentication) -> response.setStatus(HttpServletResponse.SC_OK))
+      .failureHandler((request, response, exception) ->  response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
+        "Authentication failed"))
+      .permitAll()
+    .and()
+      .logout()
+      .logoutUrl("/api/logout")
+      .logoutSuccessHandler((request, response, authentication) -> response.setStatus(HttpServletResponse.SC_OK))
+      .permitAll()
+    .and()
+      .authorizeRequests()
+        .antMatchers("/api/registration").permitAll();
   }
 
   @Override

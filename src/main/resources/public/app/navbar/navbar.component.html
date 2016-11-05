@@ -9,18 +9,25 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Catdogtion</a>
+      <a class="navbar-brand" routerLink="/">Catdogtion</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" [collapse]="isCollapsed">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Home <span class="sr-only">(current)</span></a></li>
+        <li class="active"><a routerLink="/">Home <span class="sr-only">(current)</span></a></li>
       </ul>
 
-      <div class="navbar-right">
-        <button type="button" class="btn btn-success navbar-btn">Sign in</button>
-        <button type="button" class="btn btn-warning navbar-btn">Sign up</button>
+      <div class="navbar-right" *ngIf="authenticatedUser">
+        <p class="navbar-text">
+          You are signed in as {{authenticatedUser?.firstName}} {{authenticatedUser?.lastName}}
+        </p>
+        <button type="button" class="btn btn-default navbar-btn" (click)="logout()">Logout</button>
+      </div>
+
+      <div class="navbar-right" *ngIf="!authenticatedUser">
+        <button type="button" class="btn btn-success navbar-btn" routerLink="/sign-in">Sign in</button>
+        <button type="button" class="btn btn-warning navbar-btn" routerLink="/sign-up">Sign up</button>
       </div>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->

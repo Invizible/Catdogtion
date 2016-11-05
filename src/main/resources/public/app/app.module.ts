@@ -5,20 +5,29 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import {CollapseDirective} from 'ng2-bootstrap';
+import { CollapseDirective } from 'ng2-bootstrap';
+import { HomeComponent } from './home/home.component';
+import { AppRoutingModule } from "./app-routing/app-routing.module";
+import { AuthenticationModule } from "./authentication/authentication.module";
+import { UserService } from './user.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
-    CollapseDirective
+    CollapseDirective,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    AppRoutingModule,
+    AuthenticationModule
   ],
-  providers: [],
+  providers: [
+    UserService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
