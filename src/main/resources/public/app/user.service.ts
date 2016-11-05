@@ -36,4 +36,9 @@ export class UserService {
       }
     );
   }
+
+  signUp(user: User): Observable<User> {
+    return this.http.post('api/users', user)
+      .map(resp => resp.json() as User);
+  }
 }

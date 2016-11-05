@@ -1,34 +1,38 @@
-<form class="form-horizontal col-sm-offset-3" (ngSubmit)="signIn()">
-  <!-- Username -->
-  <div class="form-group">
-    <label for="username" class="col-sm-2 control-label">Username</label>
-    <div class="col-sm-4">
-      <input type="text" class="form-control" id="username"
-             required
-             [(ngModel)]="user.username" name="username" #username="ngModel">
-      <div [hidden]="username.valid || username.pristine" class="alert alert-danger">
-        Username is required
+<div class="col-sm-offset-3">
+  <h1>Sign in</h1>
+
+  <form class="form-horizontal" (ngSubmit)="signIn()">
+    <!-- Username -->
+    <div class="form-group required">
+      <label for="username" class="col-sm-2 control-label">Username</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="username"
+               required
+               [(ngModel)]="user.username" name="username" #username="ngModel">
+        <div [hidden]="username.valid || username.pristine" class="alert alert-danger">
+          Username is required
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Password -->
-  <div class="form-group">
-    <label for="password" class="col-sm-2 control-label">Password</label>
-    <div class="col-sm-4">
-      <input type="password" class="form-control" id="password"
-             required
-             [(ngModel)]="user.password" name="password" #password="ngModel">
-      <div [hidden]="password.valid || password.pristine" class="alert alert-danger">
-        Password is required
+    <!-- Password -->
+    <div class="form-group required">
+      <label for="password" class="col-sm-2 control-label">Password</label>
+      <div class="col-sm-4">
+        <input type="password" class="form-control" id="password"
+               required
+               [(ngModel)]="user.password" name="password" #password="ngModel">
+        <div [hidden]="password.valid || password.pristine" class="alert alert-danger">
+          Password is required
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Sing in -->
-  <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-4">
-      <button type="submit" class="btn btn-success">Sign in</button>
+    <!-- Sing in -->
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-4">
+        <button type="submit" class="btn btn-success">Sign in</button>
+      </div>
     </div>
-  </div>
-</form>
+  </form>
+</div>

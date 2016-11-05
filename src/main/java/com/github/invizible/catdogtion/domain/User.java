@@ -41,12 +41,13 @@ public class User {
   private String lastName;
 
   @JsonIgnore
+  @NotEmpty
   @Column(nullable = false, length = 60)
   private String password;
 
   @NotNull
   @Column(nullable = false)
-  private Boolean enabled;
+  private Boolean enabled = true;
 
   @ManyToMany
   @JoinTable(name = "users_authorities",
