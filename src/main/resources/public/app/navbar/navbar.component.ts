@@ -43,7 +43,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   logout(): void {
-    this.userService.logout().subscribe(
+    this.userService.logout(
       () => {
         this.authenticatedUser = null;
         this.router.navigate(['/home'])

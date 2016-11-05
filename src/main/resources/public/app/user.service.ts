@@ -28,7 +28,14 @@ export class UserService {
       .map(resp => resp.json() as User)
   }
 
-  logout(): Observable<any> {
-    return this.http.post('api/logout', "");
+  logout(callback): void {
+    this.http.post('api/logout', "").subscribe(
+      () => {
+        // to get a new csrf token call the api
+        this.http.options("api").subscribe(
+          callback
+        );
+      }
+    );
   }
 }
