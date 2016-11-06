@@ -10,6 +10,8 @@ import { HomeComponent } from './home/home.component';
 import { AppRoutingModule } from "./app-routing/app-routing.module";
 import { AuthenticationModule } from "./authentication/authentication.module";
 import { UserService } from './user.service';
+import { LotComponent } from './lot/lot.component';
+import { LotsService } from './lots.service';
 
 @NgModule({
   declarations: [
@@ -17,6 +19,7 @@ import { UserService } from './user.service';
     NavbarComponent,
     CollapseDirective,
     HomeComponent,
+    LotComponent,
   ],
   imports: [
     BrowserModule,
@@ -26,7 +29,8 @@ import { UserService } from './user.service';
     AuthenticationModule
   ],
   providers: [
-    UserService
+    UserService,
+    LotsService
   ],
   bootstrap: [AppComponent]
 })
