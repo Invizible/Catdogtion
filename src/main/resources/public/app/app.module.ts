@@ -12,6 +12,7 @@ import { AuthenticationModule } from "./authentication/authentication.module";
 import { UserService } from './user.service';
 import { LotComponent } from './lot/lot.component';
 import { LotsService } from './lots.service';
+import { SearchComponent } from './search/search.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { LotsService } from './lots.service';
     CollapseDirective,
     HomeComponent,
     LotComponent,
+    SearchComponent,
   ],
   imports: [
     BrowserModule,

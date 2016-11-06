@@ -1,3 +1,14 @@
 <div class="row">
-  <lot *ngFor="let lot of lots" [lot]="lot"></lot>
+  <div class="col-md-3">
+    <search></search>
+  </div>
+  <div class="col-md-9">
+    <div class="well">
+      <h3>Lots</h3>
+
+      <div class="row">
+        <lot *ngFor="let lot of lots" [lot]="lot"></lot>
+      </div>
+    </div>
+  </div>
 </div>
