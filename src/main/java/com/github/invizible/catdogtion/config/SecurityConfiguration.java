@@ -59,6 +59,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
       .permitAll()
     .and()
       .authorizeRequests()
+      .antMatchers(HttpMethod.OPTIONS, "/api").permitAll() //needed for getting csrf token after logout
       .antMatchers(HttpMethod.POST, "/api/users").permitAll()
       .antMatchers(HttpMethod.GET, "/api/lots/**").permitAll()
       .antMatchers("/api/**").authenticated();
