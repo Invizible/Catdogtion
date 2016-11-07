@@ -11,5 +11,6 @@ public class RepositoryConfiguration extends RepositoryRestConfigurerAdapter {
   @Override
   public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
     config.exposeIdsFor(Lot.class);
+//    config.setDefaultMediaType(MediaType.APPLICATION_JSON);
   }
 }

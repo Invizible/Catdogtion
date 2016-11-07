@@ -5,7 +5,7 @@
       <h3>{{lot.name}}</h3>
       <p>{{lot.description}}</p>
       <p>
-        <a class="btn btn-primary" role="button">Participate</a>
+        <a class="btn btn-primary" role="button" [routerLink]="['/lot-details', lot.id]">Details</a>
       </p>
     </div>
   </div>

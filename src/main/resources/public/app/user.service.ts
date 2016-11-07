@@ -6,6 +6,8 @@ import 'rxjs/operator/map';
 
 @Injectable()
 export class UserService {
+  private usersUrl: string = '/api/users';
+
   private authenticatedUserSource = new BehaviorSubject<boolean>(false);
   userAuthenticated = this.authenticatedUserSource.asObservable();
 
@@ -13,7 +15,7 @@ export class UserService {
   }
 
   signIn(user: User, callback): void {
-    this.http.post('api/authentication', `username=${user.username}&password=${user.password}`,
+    this.http.post('/api/authentication', `username=${user.username}&password=${user.password}`,
       {headers: new Headers({'Content-Type': 'application/x-www-form-urlencoded'})})
       .subscribe(
         () => {
@@ -24,12 +26,12 @@ export class UserService {
   }
 
   getAuthenticatedUser(): Observable<User> {
-    return this.http.get('api/users/search/findCurrentUser')
+    return this.http.get(`${this.usersUrl}/search/findCurrentUser`)
       .map(resp => resp.json() as User)
   }
 
   logout(callback): void {
-    this.http.post('api/logout', "").subscribe(
+    this.http.post('/api/logout', "").subscribe(
       () => {
         // to get a new csrf token call the api
         this.http.options("api").subscribe(callback);
@@ -38,7 +40,7 @@ export class UserService {
   }
 
   signUp(user: User): Observable<User> {
-    return this.http.post('api/users', user)
+    return this.http.post(this.usersUrl, user)
       .map(resp => resp.json() as User);
   }
 }

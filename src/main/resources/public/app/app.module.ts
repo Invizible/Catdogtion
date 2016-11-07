@@ -13,6 +13,8 @@ import { UserService } from './user.service';
 import { LotComponent } from './lot/lot.component';
 import { LotsService } from './lots.service';
 import { SearchComponent } from './search/search.component';
+import { LotDetailsComponent } from './lot-details/lot-details.component';
+import { CarouselModule } from 'ng2-bootstrap/components/carousel';
 
 @NgModule({
   declarations: [
@@ -22,13 +24,15 @@ import { SearchComponent } from './search/search.component';
     HomeComponent,
     LotComponent,
     SearchComponent,
+    LotDetailsComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
     AppRoutingModule,
-    AuthenticationModule
+    AuthenticationModule,
+    CarouselModule
   ],
   providers: [
     UserService,

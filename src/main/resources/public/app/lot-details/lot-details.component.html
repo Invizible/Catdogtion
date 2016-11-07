@@ -1,0 +1,39 @@
+<div class="col-md-offset-3 col-md-6">
+  <div class="page-header">
+    <h1>
+      Details <small>{{lot.name}}</small>
+      <small class="pull-right">Creation date: <span class="label label-info">{{lot.creationDate | date}}</span></small>
+    </h1>
+  </div>
+
+  <carousel>
+    <slide *ngFor="let image of lot.images">
+      <img [src]="image.image">
+    </slide>
+  </carousel>
+
+  <div class="jumbotron">
+    <div class="row">
+      <div class="col-md-8">
+        <p>Starting price: <span class="label label-info">{{lot.startingPrice | currency:'UAH'}}</span></p>
+      </div>
+      <div class=" col-md-4">
+        <button class="btn btn-success">Participate</button>
+      </div>
+    </div>
+
+    <p class="text-justify">{{lot.description}}</p>
+
+    <p>Characteristics:</p>
+    <dl class="dl-horizontal">
+      <dt>//TODO:</dt>
+      <dd>implement</dd>
+    </dl>
+
+    <div class="text-info text-right">
+      <small>Auctioneer: {{lot.auctioneer?.firstName}} {{lot.auctioneer?.lastName}}</small>
+    </div>
+  </div>
+
+  <button type="button" class="btn btn-primary" (click)="goBack()"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>Back</button>
+</div>
