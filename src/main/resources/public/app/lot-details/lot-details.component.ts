@@ -24,10 +24,7 @@ export class LotDetailsComponent implements OnInit {
       this.lotsService.getLot(id).subscribe(
         lot => {
           this.lot = lot;
-          this.lotsService.getLotImages(id).subscribe(images => {
-            this.lot.images = images;
-            this.lotsService.getLotAuctioneer(id).subscribe(auctioneer => this.lot.auctioneer = auctioneer);
-          })
+          this.lotsService.getLotImages(id).subscribe(images => this.lot.images = images)
         }
       );
     });

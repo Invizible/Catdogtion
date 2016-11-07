@@ -25,7 +25,7 @@ export class LotsService {
   }
 
   getLot(id: number): Observable<Lot> {
-    return this.http.get(`${this.lotsUrl}/${id}`)
+    return this.http.get(`${this.lotsUrl}/${id}?projection=withAuctioneerAndCharacteristics`)
       .map(resp => resp.json() as Lot);
   }
 
