@@ -15,6 +15,7 @@ import { LotsService } from './lots.service';
 import { SearchComponent } from './search/search.component';
 import { LotDetailsComponent } from './lot-details/lot-details.component';
 import { CarouselModule } from 'ng2-bootstrap/components/carousel';
+import {LocationStrategy, HashLocationStrategy} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { CarouselModule } from 'ng2-bootstrap/components/carousel';
   ],
   providers: [
     UserService,
-    LotsService
+    LotsService,
+    { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
   bootstrap: [AppComponent]
 })
