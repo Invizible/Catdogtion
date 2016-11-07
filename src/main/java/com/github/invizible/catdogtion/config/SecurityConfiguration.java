@@ -22,6 +22,8 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
+import static com.github.invizible.catdogtion.Constants.ADMIN_ROLE;
+
 /**
  * @author Alex
  */
@@ -67,8 +69,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
       .permitAll()
     .and()
       .authorizeRequests()
-      .antMatchers(HttpMethod.POST, "/api/users").permitAll()
+      .antMatchers("/api/account/registration").permitAll()
       .antMatchers(HttpMethod.GET, "/api/lots/**").permitAll()
+      .antMatchers("/api/users").hasAuthority(ADMIN_ROLE)
       .antMatchers("/api/**").authenticated();
   }
 

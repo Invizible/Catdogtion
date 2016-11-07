@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { UserService } from '../user.service';
+import { AccountService } from '../account.service';
 import { Subscription } from 'rxjs';
 import { User } from '../user';
 import { Router } from '@angular/router';
@@ -16,12 +16,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
   authenticatedUser: User;
 
   constructor(
-    private userService: UserService,
+    private accountService: AccountService,
     private router: Router
   ) { }
 
   ngOnInit() {
-    this.userAuthenticatedSubscription = this.userService.userAuthenticated.subscribe(
+    this.userAuthenticatedSubscription = this.accountService.userAuthenticated.subscribe(
       (authenticated) => {
         if (authenticated) {
           this.loadAuthenticatedUser();
@@ -37,7 +37,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   private loadAuthenticatedUser(): void {
-    this.userService.getAuthenticatedUser()
+    this.accountService.getAuthenticatedUser()
       .subscribe(
         user => this.authenticatedUser = user,
         error => console.log('No Authenticated User! Please sign in!')
@@ -45,7 +45,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   logout(): void {
-    this.userService.logout(
+    this.accountService.logout(
       () => {
         this.authenticatedUser = null;
         this.router.navigate(['/home'])

@@ -1,8 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '../../user';
-import { UserService } from '../../user.service';
-import { Subscription } from 'rxjs';
+import { AccountService } from '../../account.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -12,7 +11,7 @@ export class SignInComponent implements OnInit {
   user: User = new User();
 
   constructor(
-    private userService: UserService,
+    private accountService: AccountService,
     private router: Router
   ) { }
 
@@ -20,6 +19,6 @@ export class SignInComponent implements OnInit {
   }
 
   signIn(): void {
-    this.userService.signIn(this.user, () => this.router.navigate(['/home']));
+    this.accountService.signIn(this.user, () => this.router.navigate(['/home']));
   }
 }

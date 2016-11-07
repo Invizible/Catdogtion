@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../user.service';
+import { AccountService } from '../../account.service';
 import { Router } from '@angular/router';
 import { RegistrationUser } from './registration-user';
 
@@ -12,7 +12,7 @@ export class SignUpComponent implements OnInit {
 
 
   constructor(
-    private userService: UserService,
+    private accountService: AccountService,
     private router: Router
   ) { }
 
@@ -20,7 +20,7 @@ export class SignUpComponent implements OnInit {
   }
 
   signUp(): void {
-    this.userService.signUp(this.user).subscribe(
+    this.accountService.signUp(this.user).subscribe(
       user => this.router.navigate(['/sign-in'])
     );
   }

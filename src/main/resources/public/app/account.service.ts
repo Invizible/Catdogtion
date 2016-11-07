@@ -2,10 +2,9 @@ import { Injectable } from '@angular/core';
 import { User } from './user';
 import { Http, Headers } from '@angular/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import 'rxjs/operator/map';
 
 @Injectable()
-export class UserService {
+export class AccountService {
   private usersUrl: string = '/api/users';
 
   private authenticatedUserSource = new BehaviorSubject<boolean>(false);
@@ -40,7 +39,7 @@ export class UserService {
   }
 
   signUp(user: User): Observable<User> {
-    return this.http.post(this.usersUrl, user)
+    return this.http.post('api/account/registration', user)
       .map(resp => resp.json() as User);
   }
 }

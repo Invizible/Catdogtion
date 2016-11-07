@@ -28,9 +28,9 @@ import java.util.Set;
 import static com.github.invizible.catdogtion.Constants.USER_ROLE;
 
 @RestController
-@RequestMapping(path = "/api/users")
-public class UserResource {
-  private ObjectMapper mapper = new ObjectMapper()
+@RequestMapping(path = "/api/account")
+public class AccountResource {
+  private static ObjectMapper MAPPER = new ObjectMapper()
     .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
   @Autowired
@@ -48,10 +48,10 @@ public class UserResource {
   @Autowired
   private RoleRepository roleRepository;
 
-  @PostMapping
+  @PostMapping("/registration")
   public ResponseEntity<?> signUp(@RequestBody String json) throws URISyntaxException, IOException {
-    ObjectNode node = mapper.readValue(json, ObjectNode.class);
-    User user = mapper.treeToValue(node, User.class);
+    ObjectNode node = MAPPER.readValue(json, ObjectNode.class);
+    User user = MAPPER.treeToValue(node, User.class);
     Set<ConstraintViolation<User>> errors = validator.validate(user);
 
     if (!errors.isEmpty()) {

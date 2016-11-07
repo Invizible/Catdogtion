@@ -9,13 +9,13 @@ import { CollapseDirective } from 'ng2-bootstrap';
 import { HomeComponent } from './home/home.component';
 import { AppRoutingModule } from "./app-routing/app-routing.module";
 import { AuthenticationModule } from "./authentication/authentication.module";
-import { UserService } from './user.service';
+import { AccountService } from './account.service';
 import { LotComponent } from './lot/lot.component';
 import { LotsService } from './lots.service';
 import { SearchComponent } from './search/search.component';
 import { LotDetailsComponent } from './lot-details/lot-details.component';
 import { CarouselModule } from 'ng2-bootstrap/components/carousel';
-import {LocationStrategy, HashLocationStrategy} from "@angular/common";
+import { LocationStrategy, HashLocationStrategy } from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -36,7 +36,7 @@ import {LocationStrategy, HashLocationStrategy} from "@angular/common";
     CarouselModule
   ],
   providers: [
-    UserService,
+    AccountService,
     LotsService,
     { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
