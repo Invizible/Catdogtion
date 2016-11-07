@@ -9,9 +9,9 @@
         <input type="text" class="form-control" id="username"
                required
                [(ngModel)]="user.username" name="username" #username="ngModel">
-        <div [hidden]="username.valid || username.pristine" class="alert alert-danger">
+        <p [hidden]="username.valid || username.pristine" class="alert alert-danger">
           Username is required
-        </div>
+        </p>
       </div>
     </div>
 
@@ -22,9 +22,9 @@
         <input type="password" class="form-control" id="password"
                required
                [(ngModel)]="user.password" name="password" #password="ngModel">
-        <div [hidden]="password.valid || password.pristine" class="alert alert-danger">
+        <p [hidden]="password.valid || password.pristine" class="alert alert-danger">
           Password is required
-        </div>
+        </p>
       </div>
     </div>
 

@@ -5,7 +5,7 @@ export class Lot {
   id: number;
   name: string;
   description: string;
-  startingPrice: number;
+  startingPrice: number = 0;
   creationDate: Date;
   images: Image[];
   auctioneer: User;

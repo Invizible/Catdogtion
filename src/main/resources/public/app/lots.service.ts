@@ -18,6 +18,11 @@ export class LotsService {
       .map(resp => resp.json()._embedded.lots as Lot[]);
   }
 
+  getAllLotsForCurrentUser(): Observable<Lot[]> {
+    return this.http.get(`${this.lotsUrl}/search/findAllForCurrentUser`)
+      .map(resp => resp.json()._embedded.lots as Lot[]);
+  }
+
   getLotImages(lotId: number): Observable<Image[]> {
     return this.http.get(`${this.lotsUrl}/${lotId}/images`)
       .map(resp => resp.json()._embedded.images

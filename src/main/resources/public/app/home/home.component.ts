@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Lot } from '../lot';
 import { LotsService } from '../lots.service';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -8,13 +10,19 @@ import { LotsService } from '../lots.service';
 })
 export class HomeComponent implements OnInit {
   lots: Lot[];
+  forCurrentUser: boolean = false;
 
   constructor(
-    private lotsService: LotsService
-  ) { }
+    private lotsService: LotsService,
+    private route: ActivatedRoute
+  ) {
+    let data = route.snapshot.data[0];
+    this.forCurrentUser = data ? data.forCurrentUser : false;
+  }
 
   ngOnInit() {
-    this.lotsService.getAllLots().subscribe(
+    let lots: Observable<Lot[]> = this.forCurrentUser ? this.lotsService.getAllLotsForCurrentUser() : this.lotsService.getAllLots();
+    lots.subscribe(
       lots => this.lots = lots
     );
   }

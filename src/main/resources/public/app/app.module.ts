@@ -16,6 +16,8 @@ import { SearchComponent } from './search/search.component';
 import { LotDetailsComponent } from './lot-details/lot-details.component';
 import { CarouselModule } from 'ng2-bootstrap/components/carousel';
 import { LocationStrategy, HashLocationStrategy } from "@angular/common";
+import { LotModalComponent } from './lot-modal/lot-modal.component';
+import { ModalModule } from 'ng2-bootstrap/components/modal';
 
 @NgModule({
   declarations: [
@@ -26,6 +28,7 @@ import { LocationStrategy, HashLocationStrategy } from "@angular/common";
     LotComponent,
     SearchComponent,
     LotDetailsComponent,
+    LotModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -33,7 +36,8 @@ import { LocationStrategy, HashLocationStrategy } from "@angular/common";
     HttpModule,
     AppRoutingModule,
     AuthenticationModule,
-    CarouselModule
+    CarouselModule,
+    ModalModule
   ],
   providers: [
     AccountService,

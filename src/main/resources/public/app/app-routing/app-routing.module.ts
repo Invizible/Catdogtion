@@ -26,6 +26,11 @@ const routes: Routes = [
   {
     path: 'lot-details/:id',
     component: LotDetailsComponent
+  },
+  {
+    path: 'my-lots',
+    component: HomeComponent,
+    data: [{ forCurrentUser: true }]
   }
 ];
 

@@ -9,9 +9,9 @@
         <input type="text" class="form-control" id="username"
                required
                [(ngModel)]="user.username" name="username" #username="ngModel">
-        <div [hidden]="username.valid || username.pristine" class="alert alert-danger">
+        <p [hidden]="username.valid || username.pristine" class="alert alert-danger">
           Username is required
-        </div>
+        </p>
       </div>
     </div>
 
@@ -22,9 +22,9 @@
         <input type="password" class="form-control" id="password"
                required
                [(ngModel)]="user.password" name="password" #password="ngModel">
-        <div [hidden]="password.valid || password.pristine" class="alert alert-danger">
+        <p [hidden]="password.valid || password.pristine" class="alert alert-danger">
           Password is required
-        </div>
+        </p>
       </div>
     </div>
 
@@ -35,12 +35,12 @@
         <input type="password" class="form-control" id="repeatPassword"
                required
                [(ngModel)]="user.repeatPassword" name="repeatPassword" #repeatPassword="ngModel">
-        <div [hidden]="repeatPassword.valid || repeatPassword.pristine" class="alert alert-danger">
+        <p [hidden]="repeatPassword.valid || repeatPassword.pristine" class="alert alert-danger">
           Repeat your password
-        </div>
-        <div [hidden]="!(repeatPassword.dirty && password.value != repeatPassword.value)" class="alert alert-danger">
+        </p>
+        <p [hidden]="!(repeatPassword.dirty && password.value != repeatPassword.value)" class="alert alert-danger">
           Passwords should match
-        </div>
+        </p>
       </div>
     </div>
 
@@ -51,9 +51,9 @@
         <input type="text" class="form-control" id="firstName"
                required
                [(ngModel)]="user.firstName" name="firstName" #firstName="ngModel">
-        <div [hidden]="firstName.valid || firstName.pristine" class="alert alert-danger">
+        <p [hidden]="firstName.valid || firstName.pristine" class="alert alert-danger">
           First name is required
-        </div>
+        </p>
       </div>
     </div>
 
@@ -64,9 +64,9 @@
         <input type="text" class="form-control" id="lastName"
                required
                [(ngModel)]="user.lastName" name="lastName" #lastName="ngModel">
-        <div [hidden]="lastName.valid || lastName.pristine" class="alert alert-danger">
+        <p [hidden]="lastName.valid || lastName.pristine" class="alert alert-danger">
           Last name is required
-        </div>
+        </p>
       </div>
     </div>
 

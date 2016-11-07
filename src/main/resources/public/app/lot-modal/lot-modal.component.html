@@ -1,0 +1,59 @@
+<div bsModal #lotModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" (click)="lotModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Add Lot</h4>
+      </div>
+
+      <div class="modal-body">
+        <form (ngSubmit)="save()">
+          <!-- Name -->
+          <div class="form-group required">
+            <label for="name" class="control-label">Name</label>
+            <input type="text" class="form-control" id="name"
+                   required
+                   [(ngModel)]="lot.name" name="name" #name="ngModel">
+            <p [hidden]="name.valid || name.pristine" class="alert alert-danger">
+              Name is required
+            </p>
+          </div>
+
+          <!-- Description -->
+          <div class="form-group required">
+            <label for="description" class="control-label">Description</label>
+            <textarea class="form-control" id="description" rows="10"
+                      required
+                      [(ngModel)]="lot.description" name="description" #description="ngModel">
+                </textarea>
+            <p [hidden]="description.valid || description.pristine" class="alert alert-danger">
+              Description is required
+            </p>
+          </div>
+
+          <!-- Starting price -->
+          <div class="form-group required">
+            <label for="startingPrice" class="control-label">Starting price</label>
+            <input type="number" class="form-control" id="startingPrice"
+                   required
+                   [(ngModel)]="lot.startingPrice" name="startingPrice" #startingPrice="ngModel">
+            <p [hidden]="startingPrice.valid || startingPrice.pristine" class="alert alert-danger">
+              Starting price is required
+            </p>
+          </div>
+
+          <!-- Images -->
+          //TODO: Images
+
+          <!-- Characteristics -->
+          //TODO: Characteristics
+
+          <button type="submit" class="btn btn-success">Ok</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

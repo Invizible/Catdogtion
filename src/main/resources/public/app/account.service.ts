@@ -30,10 +30,10 @@ export class AccountService {
   }
 
   logout(callback): void {
-    this.http.post('/api/logout', "").subscribe(
+    this.http.post('/api/logout', '').subscribe(
       () => {
         // to get a new csrf token call the api
-        this.http.options("api").subscribe(callback);
+        this.http.options('api').subscribe(callback);
       }
     );
   }

@@ -5,7 +5,13 @@
   <div class="col-md-9">
     <div class="well">
       <div class="page-header">
-        <h1>Lots</h1>
+        <h1><span *ngIf="forCurrentUser">Yours</span> Lots</h1>
+
+        <button *ngIf="forCurrentUser" class="btn btn-lg btn-primary" (click)="lotModal.showModal()">
+          <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Add Lot
+        </button>
+
+        <lot-modal #lotModal="lotModal"></lot-modal>
       </div>
 
       <div class="row">
