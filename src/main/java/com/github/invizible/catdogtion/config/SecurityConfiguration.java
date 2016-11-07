@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.data.repository.query.spi.EvaluationContextExtension;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -41,6 +42,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   }
 
   @Override
+  public void configure(WebSecurity web) throws Exception
+  {
+    web.ignoring()
+      .antMatchers(HttpMethod.OPTIONS, "/**");
+  }
+
+  @Override
   protected void configure(HttpSecurity http) throws Exception {
     http
       .csrf()
@@ -59,7 +67,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
       .permitAll()
     .and()
       .authorizeRequests()
-      .antMatchers(HttpMethod.OPTIONS, "/api").permitAll() //needed for getting csrf token after logout
       .antMatchers(HttpMethod.POST, "/api/users").permitAll()
       .antMatchers(HttpMethod.GET, "/api/lots/**").permitAll()
       .antMatchers("/api/**").authenticated();
