@@ -19,7 +19,7 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" [collapse]="isCollapsed">
       <ul class="nav navbar-nav">
         <li routerLinkActive="active"><a routerLink="/home">Home</a></li>
-        <li routerLinkActive="active"><a routerLink="/my-lots">My Lots</a></li>
+        <li routerLinkActive="active" *ngIf="authenticatedUser"><a routerLink="/my-lots">My Lots</a></li>
       </ul>
 
       <div class="navbar-right" *ngIf="authenticatedUser">
