@@ -18,6 +18,7 @@ import { CarouselModule } from 'ng2-bootstrap/components/carousel';
 import { LocationStrategy, HashLocationStrategy } from "@angular/common";
 import { LotModalComponent } from './lot-modal/lot-modal.component';
 import { ModalModule } from 'ng2-bootstrap/components/modal';
+import { FileUploadModule } from "ng2-file-upload";
 
 @NgModule({
   declarations: [
@@ -28,7 +29,7 @@ import { ModalModule } from 'ng2-bootstrap/components/modal';
     LotComponent,
     SearchComponent,
     LotDetailsComponent,
-    LotModalComponent,
+    LotModalComponent
   ],
   imports: [
     BrowserModule,
@@ -37,7 +38,8 @@ import { ModalModule } from 'ng2-bootstrap/components/modal';
     AppRoutingModule,
     AuthenticationModule,
     CarouselModule,
-    ModalModule
+    ModalModule,
+    FileUploadModule
   ],
   providers: [
     AccountService,
