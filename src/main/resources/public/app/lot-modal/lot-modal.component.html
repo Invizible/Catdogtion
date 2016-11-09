@@ -52,9 +52,9 @@
                  [options]="options"
                  (onUpload)="handleMultipleUpload($event)">
 
-          <p *ngIf="response.length">
+          <p *ngIf="responses.length">
             <span>Progress{{ progress }}%</span>
-            <span>{{ response }}</span>
+            <span>{{ responses }}</span>
           </p>
 
           <div>

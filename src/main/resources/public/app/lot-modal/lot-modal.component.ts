@@ -17,7 +17,7 @@ export class LotModalComponent implements OnInit {
   private zone: NgZone;
   private options: Object;
   private progress: number = 0;
-  private response: any[] = [];
+  private responses: any[] = [];
 
   lot: Lot = new Lot();
 
@@ -30,7 +30,7 @@ export class LotModalComponent implements OnInit {
 
     this.zone = new NgZone({ enableLongStackTrace: false });
     this.options = {
-      url: '/api/images',
+      url: '/api/uploadImage',
       customHeaders: {
         'X-XSRF-TOKEN': xsrfToken
       }
@@ -42,19 +42,19 @@ export class LotModalComponent implements OnInit {
   }
 
   handleMultipleUpload(data: any): void {
-    let index = this.response.findIndex(x => x.id === data.id);
+    let index = this.responses.findIndex(x => x.id === data.id);
     if (index === -1) {
-      this.response[1].push(data);
+      this.responses.push(data);
     } else {
       let total = 0, uploaded = 0;
-      this.response.forEach(resp => {
+      this.responses.forEach(resp => {
         total += resp.progress.total;
         uploaded += resp.progress.loaded;
       });
       let percent = uploaded / (total / 100) / 100;
 
       this.zone.run(() => {
-        this.response[index] = data;
+        this.responses[index] = data;
         this.progress = percent;
       });
     }

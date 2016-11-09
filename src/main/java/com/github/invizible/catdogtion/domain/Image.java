@@ -27,4 +27,16 @@ public class Image {
   @NotEmpty
   @Column(nullable = false)
   private String contentType = DEFAULT_CONTENT_TYPE;
+
+  public Image() {
+  }
+
+  public Image(byte[] image) {
+    this.image = image;
+  }
+
+  public Image(byte[] image, String contentType) {
+    this.image = image;
+    this.contentType = contentType;
+  }
 }
