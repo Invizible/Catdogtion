@@ -53,7 +53,9 @@ export class LotModalComponent implements OnInit {
       this.responses.forEach(resp => {
         total += resp.progress.total;
         uploaded += resp.progress.loaded;
-        resp.image = this.imageService.convertToBase64Image(JSON.parse(resp.response));
+        if (resp.response) {
+          resp.image = this.imageService.convertToBase64Image(JSON.parse(resp.response));
+        }
       });
       let percent = Math.floor(uploaded / total * 100);
 
