@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
-import { LotsService } from '../lots.service';
+import { LotService } from '../lot.service';
 import { Lot } from '../lot';
 
 @Component({
@@ -15,7 +15,7 @@ export class LotDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private location: Location,
-    private lotsService: LotsService
+    private lotsService: LotService
   ) { }
 
   ngOnInit() {

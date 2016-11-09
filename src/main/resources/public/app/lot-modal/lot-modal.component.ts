@@ -1,8 +1,10 @@
-import {Component, OnInit, ViewChild, NgZone} from '@angular/core';
+import { Component, OnInit, ViewChild, NgZone } from '@angular/core';
 import { ModalDirective } from 'ng2-bootstrap';
 import { Lot } from '../lot';
-import { CookieService } from "angular2-cookie/services/cookies.service";
-import { ImageService } from "../image.service";
+import { CookieService } from 'angular2-cookie/services/cookies.service';
+import { ImageService } from '../image.service';
+import { LotService } from '../lot.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'lot-modal',
@@ -20,17 +22,20 @@ export class LotModalComponent implements OnInit {
   private progress: number = 0;
   private responses: any[] = [];
 
+  mouseEnter: boolean = false;
+
   lot: Lot = new Lot();
 
-  constructor(
-    private cookieService: CookieService,
-    private imageService: ImageService
-  ) { }
+  constructor(private cookieService: CookieService,
+              private imageService: ImageService,
+              private lotService: LotService,
+              private router: Router) {
+  }
 
   ngOnInit() {
     var xsrfToken = this.cookieService.get('XSRF-TOKEN');
 
-    this.zone = new NgZone({ enableLongStackTrace: false });
+    this.zone = new NgZone({enableLongStackTrace: false});
     this.options = {
       url: '/api/uploadImage',
       customHeaders: {
@@ -67,6 +72,18 @@ export class LotModalComponent implements OnInit {
   }
 
   save(): void {
+    this.lot.images = this.responses.map(
+      response => ({id: JSON.parse(response.response).id})
+    );
+    this.lotService.saveLot(this.lot).subscribe(
+      resp => this.router.navigate(['/home'])
+    );
+  }
 
+  removeImage(response: any): void {
+    let image = JSON.parse(response.response);
+    this.imageService.deleteImage(image.id).subscribe(
+      () => this.responses = this.responses.filter(resp => resp.id != response.id)
+    );
   }
 }

@@ -11,7 +11,7 @@ import { AppRoutingModule } from "./app-routing/app-routing.module";
 import { AuthenticationModule } from "./authentication/authentication.module";
 import { AccountService } from './account.service';
 import { LotComponent } from './lot/lot.component';
-import { LotsService } from './lots.service';
+import { LotService } from './lot.service';
 import { SearchComponent } from './search/search.component';
 import { LotDetailsComponent } from './lot-details/lot-details.component';
 import { CarouselModule } from 'ng2-bootstrap/components/carousel';
@@ -46,7 +46,7 @@ import {ImageService} from "./image.service";
   ],
   providers: [
     AccountService,
-    LotsService,
+    LotService,
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     CookieService,
     ImageService

@@ -10,6 +10,7 @@ import com.github.mkopylec.recaptcha.validation.RecaptchaValidator;
 import com.github.mkopylec.recaptcha.validation.ValidationResult;
 import com.google.common.collect.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Optional;
 import java.util.Set;
@@ -48,6 +48,9 @@ public class AccountResource {
   @Autowired
   private RoleRepository roleRepository;
 
+  @Autowired
+  private RepositoryEntityLinks entityLinks;
+
   @PostMapping("/registration")
   public ResponseEntity<?> signUp(@RequestBody String json) throws URISyntaxException, IOException {
     ObjectNode node = MAPPER.readValue(json, ObjectNode.class);
@@ -72,7 +75,7 @@ public class AccountResource {
 
       User savedUser = userRepository.save(user);
 
-      return ResponseEntity.created(new URI("/api/users/" + savedUser.getId()))
+      return ResponseEntity.created(entityLinks.linkForSingleResource(User.class, savedUser.getId()).toUri())
         .body(savedUser);
     } else {
       return ResponseEntity.badRequest().body("Bad captcha!");

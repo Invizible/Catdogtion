@@ -1,2 +1,7 @@
-.file-over { border: dotted 3px red; } /* Default class applied to drop zones on over */
+.drop-zone {
+    border: dashed 2px gray;
+}
 
+.file-over {
+    border: dashed 2px red;
+}

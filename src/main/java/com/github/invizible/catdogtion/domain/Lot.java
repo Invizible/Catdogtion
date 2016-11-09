@@ -50,7 +50,6 @@ public class Lot {
   @Column(nullable = false)
   private ZonedDateTime creationDate = ZonedDateTime.now();
 
-  @NotNull
   @ManyToOne(optional = false)
   private User auctioneer;
 

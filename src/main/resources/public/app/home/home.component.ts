@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Lot } from '../lot';
-import { LotsService } from '../lots.service';
+import { LotService } from '../lot.service';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 
@@ -13,7 +13,7 @@ export class HomeComponent implements OnInit {
   forCurrentUser: boolean = false;
 
   constructor(
-    private lotsService: LotsService,
+    private lotsService: LotService,
     private route: ActivatedRoute
   ) {
     let data = route.snapshot.data[0];

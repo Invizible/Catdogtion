@@ -46,25 +46,40 @@
           </div>
 
           <!-- Images -->
-          <input type="file"
-                 multiple="true"
-                 ngFileSelect
-                 [options]="options"
-                 (onUpload)="handleMultipleUpload($event)">
-
-          <div *ngFor="let response of responses">
-            <p>{{response.originalName}}</p>
-            <img [src]="response?.image" height="100"/>
+          <h4>Attachments</h4>
+          <div class="panel panel-default panel-body drop-zone"
+               (dragover)="mouseEnter = true"
+               (dragleave)="mouseEnter = false"
+               (drop)="mouseEnter = false"
+               [class.file-over]="mouseEnter"
+               ngFileDrop
+               [options]="options"
+               (onUpload)="handleMultipleUpload($event)">
+            <span>Drop files right here or use button</span>
+            <input type="file"
+                   multiple="true"
+                   ngFileSelect
+                   [options]="options"
+                   (onUpload)="handleMultipleUpload($event)">
           </div>
 
-          <progressbar [value]="progress" class="progress-striped active">
+          <progressbar *ngIf="progress > 0 && progress < 100" [value]="progress" class="progress-striped active">
             <span style="color:white; white-space:nowrap;">{{progress}}%</span>
           </progressbar>
 
-          <!-- Characteristics -->
-          //TODO: Characteristics
+          <div class="row">
+            <div *ngFor="let response of responses" class="col-xs-4 col-md-3">
+              <div class="thumbnail">
+                <a (click)="removeImage(response)" class="btn btn-danger pull-right" role="button"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                <img [src]="response?.image" height="100"/>
+              </div>
+            </div>
+          </div>
 
-          <button type="submit" class="btn btn-success">Ok</button>
+          <!-- Characteristics -->
+          <p>//TODO: Characteristics</p>
+
+          <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp;Save</button>
         </form>
       </div>
     </div>

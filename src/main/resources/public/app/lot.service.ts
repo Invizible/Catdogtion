@@ -7,7 +7,7 @@ import { User } from './user';
 import { ImageService } from "./image.service";
 
 @Injectable()
-export class LotsService {
+export class LotService {
   private lotsUrl: string = '/api/lots';
 
   constructor(
@@ -39,5 +39,9 @@ export class LotsService {
   getLotAuctioneer(id: number): Observable<User> {
     return this.http.get(`${this.lotsUrl}/${id}/auctioneer`)
       .map(resp => resp.json() as User);
+  }
+
+  saveLot(lot: Lot): Observable<any> {
+    return this.http.post(`${this.lotsUrl}`, lot);
   }
 }

@@ -1,3 +1,5 @@
 export class Image {
-  constructor(public image: string){}; //base64
+  id: number;
+
+  constructor(public image?: string){}; //base64
 }

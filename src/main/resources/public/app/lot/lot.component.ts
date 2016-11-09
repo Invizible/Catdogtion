@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Lot } from '../lot';
-import { LotsService } from '../lots.service';
+import { LotService } from '../lot.service';
 
 @Component({
   selector: 'lot',
@@ -11,7 +11,7 @@ export class LotComponent implements OnInit {
   lot: Lot;
 
   constructor(
-    private lotsService: LotsService
+    private lotsService: LotService
   ) { }
 
   ngOnInit() {
