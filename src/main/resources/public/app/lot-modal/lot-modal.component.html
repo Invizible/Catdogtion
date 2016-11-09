@@ -46,60 +46,10 @@
           </div>
 
           <!-- Images -->
-          <div ng2FileDrop
-               [ngClass]="{'nv-file-over': hasDropZoneOver}"
-               (fileOver)="fileOverBase($event)"
-               [uploader]="uploader"
-               class="well my-drop-zone">
-            Choose your photos or drop here
-            <input type="file" ng2FileSelect [uploader]="uploader" multiple  />
-          </div>
-
-          <table class="table">
-            <thead>
-            <tr>
-              <th width="50%">Name</th>
-              <th>Status</th>
-              <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let item of uploader.queue">
-              <td><strong>{{ item?.file?.name }}</strong></td>
-              <td class="text-center">
-                <span *ngIf="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
-                <span *ngIf="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
-                <span *ngIf="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
-              </td>
-              <td nowrap>
-                <button type="button" class="btn btn-danger btn-xs"
-                        (click)="item.remove()">
-                  <span class="glyphicon glyphicon-trash"></span> Remove
-                </button>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-
-          <div>
-            <div>
-              Progress:
-              <div class="progress" style="">
-                <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
-              </div>
-            </div>
-            <button type="button" class="btn btn-success btn-s"
-                    (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
-              <span class="glyphicon glyphicon-upload"></span> Upload all
-            </button>
-            <button type="button" class="btn btn-danger btn-s"
-                    (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
-              <span class="glyphicon glyphicon-trash"></span> Remove all
-            </button>
-          </div>
+          //TODO: Images
 
           <!-- Characteristics -->
-          <p>//TODO: Characteristics</p>
+          //TODO: Characteristics
 
           <button type="submit" class="btn btn-success">Ok</button>
         </form>
