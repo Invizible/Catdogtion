@@ -4,13 +4,15 @@ import { Observable } from 'rxjs';
 import { Lot } from './lot';
 import { Image } from './image';
 import { User } from './user';
+import { ImageService } from "./image.service";
 
 @Injectable()
 export class LotsService {
   private lotsUrl: string = '/api/lots';
 
   constructor(
-    private http: Http
+    private http: Http,
+    private imageService: ImageService
   ) { }
 
   getAllLots(): Observable<Lot[]> {
@@ -26,7 +28,7 @@ export class LotsService {
   getLotImages(lotId: number): Observable<Image[]> {
     return this.http.get(`${this.lotsUrl}/${lotId}/images`)
       .map(resp => resp.json()._embedded.images
-        .map(image => new Image(`data:${image.contentType};base64,${image.image}`)));
+        .map(image => new Image(this.imageService.convertToBase64Image(image))));
   }
 
   getLot(id: number): Observable<Lot> {

@@ -52,14 +52,14 @@
                  [options]="options"
                  (onUpload)="handleMultipleUpload($event)">
 
-          <p *ngIf="responses.length">
-            <span>Progress{{ progress }}%</span>
-            <span>{{ responses }}</span>
-          </p>
-
-          <div>
-            Progress: {{ progress }}%
+          <div *ngFor="let response of responses">
+            <p>{{response.originalName}}</p>
+            <img [src]="response?.image" height="100"/>
           </div>
+
+          <progressbar [value]="progress" class="progress-striped active">
+            <span style="color:white; white-space:nowrap;">{{progress}}%</span>
+          </progressbar>
 
           <!-- Characteristics -->
           //TODO: Characteristics
