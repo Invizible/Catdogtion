@@ -2,6 +2,7 @@ package com.github.invizible.catdogtion.web.rest;
 
 import com.github.invizible.catdogtion.domain.Image;
 import com.github.invizible.catdogtion.repository.ImageRepository;
+import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +15,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/api")
+@CommonsLog
 public class ImageResource {
 
   @Autowired
@@ -28,6 +30,7 @@ public class ImageResource {
         return ResponseEntity.created(new URI("/api/images/" + savedImage.getId()))
           .body(savedImage);
       } catch (Exception e) {
+        log.error(e);
         return ResponseEntity.badRequest().body("Very bad file");
       }
     } else {
