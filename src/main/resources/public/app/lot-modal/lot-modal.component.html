@@ -46,7 +46,20 @@
           </div>
 
           <!-- Images -->
-          //TODO: Images
+          <input type="file"
+                 multiple="true"
+                 ngFileSelect
+                 [options]="options"
+                 (onUpload)="handleMultipleUpload($event)">
+
+          <p *ngIf="response.length">
+            <span>Progress{{ progress }}%</span>
+            <span>{{ response }}</span>
+          </p>
+
+          <div>
+            Progress: {{ progress }}%
+          </div>
 
           <!-- Characteristics -->
           //TODO: Characteristics

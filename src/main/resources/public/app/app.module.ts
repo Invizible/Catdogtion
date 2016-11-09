@@ -18,6 +18,8 @@ import { CarouselModule } from 'ng2-bootstrap/components/carousel';
 import { LocationStrategy, HashLocationStrategy } from "@angular/common";
 import { LotModalComponent } from './lot-modal/lot-modal.component';
 import { ModalModule } from 'ng2-bootstrap/components/modal';
+import { UPLOAD_DIRECTIVES } from 'ng2-uploader/ng2-uploader';
+import {CookieService} from "angular2-cookie/services/cookies.service";
 
 @NgModule({
   declarations: [
@@ -29,6 +31,7 @@ import { ModalModule } from 'ng2-bootstrap/components/modal';
     SearchComponent,
     LotDetailsComponent,
     LotModalComponent,
+    UPLOAD_DIRECTIVES
   ],
   imports: [
     BrowserModule,
@@ -42,7 +45,8 @@ import { ModalModule } from 'ng2-bootstrap/components/modal';
   providers: [
     AccountService,
     LotsService,
-    { provide: LocationStrategy, useClass: HashLocationStrategy }
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
+    CookieService
   ],
   bootstrap: [AppComponent]
 })
