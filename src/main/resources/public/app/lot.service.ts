@@ -28,7 +28,11 @@ export class LotService {
   getLotImages(lotId: number): Observable<Image[]> {
     return this.http.get(`${this.lotsUrl}/${lotId}/images`)
       .map(resp => resp.json()._embedded.images
-        .map(image => new Image(this.imageService.convertToBase64Image(image))));
+        .map(image => {
+          let convertedImage = new Image(this.imageService.convertToBase64Image(image));
+          convertedImage.id = image.id;
+          return convertedImage;
+        }));
   }
 
   getLot(id: number): Observable<Lot> {

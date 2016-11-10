@@ -5,7 +5,6 @@ import { CookieService } from 'angular2-cookie/services/cookies.service';
 import { ImageService } from '../image.service';
 import { LotService } from '../lot.service';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'lot-modal',
@@ -48,9 +47,11 @@ export class LotModalComponent implements OnInit {
   }
 
   showModal(): void {
-    //TODO: we need ids
     this.lot.images.forEach(
-      image => this.responses.push({image: image.image})
+      image => this.responses.push({image: {
+        base64: image.image,
+        id: image.id
+      }})
     );
     this.lotModal.show();
   }
@@ -66,7 +67,11 @@ export class LotModalComponent implements OnInit {
         total += resp.progress.total;
         uploaded += resp.progress.loaded;
         if (resp.response) {
-          resp.image = this.imageService.convertToBase64Image(JSON.parse(resp.response));
+          let image = JSON.parse(resp.response);
+          resp.image = {
+            base64: this.imageService.convertToBase64Image(image),
+            id: image.id
+          };
         }
       });
       let percent = Math.floor(uploaded / total * 100);
@@ -91,13 +96,18 @@ export class LotModalComponent implements OnInit {
   }
 
   private updateLot() {
+    this.lot.images = this.responses.map(
+      response => {
+        response.image.base64 = null;
+        return {id: response.image.id};
+      }
+    );
     this.lotService.updateLot(this.lot)
       .subscribe(resp => resp);
   }
 
   removeImage(response: any): void {
-    let image = JSON.parse(response.response);
-    this.imageService.deleteImage(image.id).subscribe(
+    this.imageService.deleteImage(response.image.id).subscribe(
       () => this.responses = this.responses.filter(resp => resp.id != response.id)
     );
   }

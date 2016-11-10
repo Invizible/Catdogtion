@@ -1,5 +1,6 @@
 package com.github.invizible.catdogtion.config;
 
+import com.github.invizible.catdogtion.domain.Image;
 import com.github.invizible.catdogtion.domain.Lot;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
@@ -10,6 +11,6 @@ public class RepositoryConfiguration extends RepositoryRestConfigurerAdapter {
 
   @Override
   public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
-    config.exposeIdsFor(Lot.class);
+    config.exposeIdsFor(Lot.class, Image.class);
   }
 }
