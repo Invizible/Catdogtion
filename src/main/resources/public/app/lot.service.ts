@@ -44,4 +44,8 @@ export class LotService {
   saveLot(lot: Lot): Observable<any> {
     return this.http.post(`${this.lotsUrl}`, lot);
   }
+
+  delete(id: number): Observable<any> {
+    return this.http.delete(`${this.lotsUrl}/${id}`);
+  }
 }
