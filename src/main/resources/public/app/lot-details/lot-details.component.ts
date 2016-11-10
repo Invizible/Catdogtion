@@ -3,6 +3,8 @@ import {ActivatedRoute, Params, Router} from '@angular/router';
 import { Location } from '@angular/common';
 import { LotService } from '../lot.service';
 import { Lot } from '../lot';
+import {User} from "../user";
+import {AccountService} from "../account.service";
 
 @Component({
   selector: 'lot-details',
@@ -11,12 +13,14 @@ import { Lot } from '../lot';
 })
 export class LotDetailsComponent implements OnInit {
   lot: Lot = new Lot();
+  authenticatedUser: User = new User();
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private location: Location,
-    private lotService: LotService
+    private lotService: LotService,
+    private accountService: AccountService
   ) { }
 
   ngOnInit() {
@@ -29,6 +33,10 @@ export class LotDetailsComponent implements OnInit {
         }
       );
     });
+
+    this.accountService.getAuthenticatedUser().subscribe(
+      user => this.authenticatedUser = user
+    )
   }
 
   goBack(): void {

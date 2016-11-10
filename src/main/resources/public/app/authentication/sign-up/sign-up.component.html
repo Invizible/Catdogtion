@@ -1,6 +1,12 @@
 <div class="col-sm-offset-3">
   <h1>Registration</h1>
 
+  <div class="row">
+    <p [hidden]="!error" class="alert alert-danger col-sm-6">
+      {{ error }}
+    </p>
+  </div>
+
   <form class="form-horizontal" (ngSubmit)="signUp()" #theForm="ngForm">
     <!-- Username -->
     <div class="form-group required">

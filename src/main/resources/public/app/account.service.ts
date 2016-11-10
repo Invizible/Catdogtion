@@ -13,14 +13,15 @@ export class AccountService {
   constructor(private http: Http) {
   }
 
-  signIn(user: User, callback): void {
+  signIn(user: User, callback, errorCallback?): void {
     this.http.post('/api/authentication', `username=${user.username}&password=${user.password}`,
       {headers: new Headers({'Content-Type': 'application/x-www-form-urlencoded'})})
       .subscribe(
         () => {
           this.authenticatedUserSource.next(true);
           callback();
-        }
+        },
+        errorCallback
       );
   }
 

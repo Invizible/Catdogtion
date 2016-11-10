@@ -5,9 +5,11 @@
       <small class="pull-right">Creation date: <span class="label label-info">{{lot.creationDate | date}}</span></small>
     </h1>
 
-    <a (click)="removeLot(lot)" class="btn btn-danger" role="button">
-      <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>Delete this Lot
-    </a>
+    <div *ngIf="authenticatedUser.username == lot.auctioneer?.username">
+      <a (click)="removeLot(lot)" class="btn btn-danger" role="button">
+        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>Delete this Lot
+      </a>
+    </div>
   </div>
 
   <carousel>

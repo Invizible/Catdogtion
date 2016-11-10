@@ -9,6 +9,7 @@ import { AccountService } from '../../account.service';
 })
 export class SignInComponent implements OnInit {
   user: User = new User();
+  error: string;
 
   constructor(
     private accountService: AccountService,
@@ -19,6 +20,11 @@ export class SignInComponent implements OnInit {
   }
 
   signIn(): void {
-    this.accountService.signIn(this.user, () => this.router.navigate(['/home']));
+    this.error = '';
+
+    this.accountService.signIn(this.user,
+      () => this.router.navigate(['/home']),
+      (error) => this.error = JSON.parse(error._body).message
+    );
   }
 }

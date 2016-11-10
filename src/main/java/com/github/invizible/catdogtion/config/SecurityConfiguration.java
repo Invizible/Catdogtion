@@ -60,7 +60,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
       .loginProcessingUrl("/api/authentication")
       .successHandler((request, response, authentication) -> response.setStatus(HttpServletResponse.SC_OK))
       .failureHandler((request, response, exception) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
-        "Authentication failed"))
+        "Wrong username or password"))
       .permitAll()
     .and()
       .logout()

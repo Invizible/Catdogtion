@@ -9,7 +9,7 @@ import { RegistrationUser } from './registration-user';
 })
 export class SignUpComponent implements OnInit {
   user: RegistrationUser = new RegistrationUser();
-
+  error: string;
 
   constructor(
     private accountService: AccountService,
@@ -21,7 +21,8 @@ export class SignUpComponent implements OnInit {
 
   signUp(): void {
     this.accountService.signUp(this.user).subscribe(
-      user => this.router.navigate(['/sign-in'])
+      user => this.router.navigate(['/sign-in']),
+      error => this.error = error._body
     );
   }
 }
