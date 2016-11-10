@@ -56,12 +56,13 @@
                [options]="options"
                (onUpload)="handleMultipleUpload($event)">
             <span>Drop files right here or use button</span>
-            <input type="file"
-                   multiple="true"
-                   ngFileSelect
-                   [options]="options"
-                   (onUpload)="handleMultipleUpload($event)">
           </div>
+
+          <input type="file"
+                 multiple="true"
+                 ngFileSelect
+                 [options]="options"
+                 (onUpload)="handleMultipleUpload($event)">
 
           <progressbar *ngIf="progress > 0 && progress < 100" [value]="progress" class="progress-striped active">
             <span style="color:white; white-space:nowrap;">{{progress}}%</span>
