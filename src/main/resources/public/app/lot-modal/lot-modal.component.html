@@ -31,7 +31,7 @@
             <!-- Source -->
             <div [hidden]="previewDescription">
               <button type="button" class="btn btn-info" (click)="previewDescription = true">
-                <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>Preview
+                <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;Preview
               </button>
 
               <textarea class="form-control" id="description" rows="10"
@@ -43,7 +43,7 @@
             <!-- Preview -->
             <div [hidden]="!previewDescription">
               <button [hidden]="previewDescription" type="button" class="btn btn-danger" (click)="previewDescription = false">
-                <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>Show source
+                <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>&nbsp;Show source
               </button>
 
               <div class="panel panel-default panel-body" [innerHTML]="lot.description | markdownToHtml"></div>
