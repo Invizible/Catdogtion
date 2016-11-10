@@ -24,14 +24,35 @@
 
           <!-- Description -->
           <div class="form-group required">
-            <label for="description" class="control-label">Description</label>
-            <textarea class="form-control" id="description" rows="10"
-                      required
-                      [(ngModel)]="lot.description" name="description" #description="ngModel">
-                </textarea>
+            <label for="description" class="control-label">
+              Description <a href="https://guides.github.com/features/mastering-markdown/" target="_blank">(you can use markdown)</a>
+            </label>
+
+            <!-- Source -->
+            <div [hidden]="previewDescription">
+              <button type="button" class="btn btn-info" (click)="previewDescription = true">
+                <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>Preview
+              </button>
+
+              <textarea class="form-control" id="description" rows="10"
+                        required
+                        [(ngModel)]="lot.description" name="description" #description="ngModel">
+              </textarea>
+            </div>
+
+            <!-- Preview -->
+            <div [hidden]="!previewDescription">
+              <button [hidden]="previewDescription" type="button" class="btn btn-danger" (click)="previewDescription = false">
+                <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>Show source
+              </button>
+
+              <div class="panel panel-default panel-body" [innerHTML]="lot.description | markdownToHtml"></div>
+            </div>
+
             <p [hidden]="description.valid || description.pristine" class="alert alert-danger">
               Description is required
             </p>
+
           </div>
 
           <!-- Starting price -->

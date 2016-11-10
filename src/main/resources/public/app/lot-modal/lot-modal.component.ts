@@ -23,6 +23,7 @@ export class LotModalComponent implements OnInit {
   private responses: any[] = [];
 
   mouseEnter: boolean = false;
+  previewDescription: boolean = false;
 
   lot: Lot = new Lot();
 

@@ -22,7 +22,7 @@
       </div>
     </div>
 
-    <p class="text-justify">{{lot.description}}</p>
+    <p class="text-justify" [innerHTML]="lot.description | markdownToHtml"></p>
 
     <p>Characteristics:</p>
     <dl class="dl-horizontal">

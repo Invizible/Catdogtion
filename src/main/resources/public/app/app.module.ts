@@ -5,7 +5,7 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import {CollapseDirective, ProgressbarModule} from 'ng2-bootstrap';
+import { CollapseDirective, ProgressbarModule } from 'ng2-bootstrap';
 import { HomeComponent } from './home/home.component';
 import { AppRoutingModule } from "./app-routing/app-routing.module";
 import { AuthenticationModule } from "./authentication/authentication.module";
@@ -19,8 +19,9 @@ import { LocationStrategy, HashLocationStrategy } from "@angular/common";
 import { LotModalComponent } from './lot-modal/lot-modal.component';
 import { ModalModule } from 'ng2-bootstrap/components/modal';
 import { UPLOAD_DIRECTIVES } from 'ng2-uploader/ng2-uploader';
-import {CookieService} from "angular2-cookie/services/cookies.service";
-import {ImageService} from "./image.service";
+import { CookieService } from "angular2-cookie/services/cookies.service";
+import { ImageService } from "./image.service";
+import { MarkdownToHtmlPipe } from './markdown-to-html.pipe';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import {ImageService} from "./image.service";
     SearchComponent,
     LotDetailsComponent,
     LotModalComponent,
-    UPLOAD_DIRECTIVES
+    UPLOAD_DIRECTIVES,
+    MarkdownToHtmlPipe
   ],
   imports: [
     BrowserModule,

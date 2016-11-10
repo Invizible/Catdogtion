@@ -25,14 +25,16 @@
     "angular2-cookie": "^1.2.5",
     "bootstrap": "^3.3.7",
     "core-js": "^2.4.1",
+    "d3": "^4.3.0",
+    "marked": "^0.3.6",
     "ng2-bootstrap": "^1.1.11",
     "ng2-recaptcha": "^1.4.0",
     "ng2-uploader": "^1.4.1",
-    "rxjs": "5.0.0-beta.12",
     "ts-helpers": "^1.1.1",
     "zone.js": "^0.6.23"
   },
   "devDependencies": {
+    "@types/d3": "^4.3.0",
     "@types/grecaptcha": "^2.0.30",
     "@types/jasmine": "^2.2.30",
     "@types/node": "^6.0.42",
