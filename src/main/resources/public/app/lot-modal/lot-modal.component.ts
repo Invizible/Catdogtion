@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild, NgZone } from '@angular/core';
+import { Component, OnInit, ViewChild, NgZone, Input } from '@angular/core';
 import { ModalDirective } from 'ng2-bootstrap';
 import { Lot } from '../lot';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 import { ImageService } from '../image.service';
 import { LotService } from '../lot.service';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'lot-modal',
@@ -25,6 +26,7 @@ export class LotModalComponent implements OnInit {
   mouseEnter: boolean = false;
   previewDescription: boolean = false;
 
+  @Input()
   lot: Lot = new Lot();
 
   constructor(private cookieService: CookieService,
@@ -46,6 +48,10 @@ export class LotModalComponent implements OnInit {
   }
 
   showModal(): void {
+    //TODO: we need ids
+    this.lot.images.forEach(
+      image => this.responses.push({image: image.image})
+    );
     this.lotModal.show();
   }
 
@@ -73,12 +79,20 @@ export class LotModalComponent implements OnInit {
   }
 
   save(): void {
+    this.lot.id ? this.updateLot() : this.saveLot();
+  }
+
+  private saveLot(): void {
     this.lot.images = this.responses.map(
       response => ({id: JSON.parse(response.response).id})
     );
-    this.lotService.saveLot(this.lot).subscribe(
-      resp => this.router.navigate(['/home'])
-    );
+    this.lotService.saveLot(this.lot)
+      .subscribe(resp => this.router.navigate(['/home']));
+  }
+
+  private updateLot() {
+    this.lotService.updateLot(this.lot)
+      .subscribe(resp => resp);
   }
 
   removeImage(response: any): void {

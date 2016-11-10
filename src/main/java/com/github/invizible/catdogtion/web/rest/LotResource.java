@@ -7,8 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
@@ -37,5 +40,11 @@ public class LotResource {
     return ResponseEntity
       .created(entityLinks.linkForSingleResource(Lot.class, savedLot.getId()).toUri())
       .body(savedLot);
+  }
+
+  @PutMapping("/lots/{id}")
+  public ResponseEntity<?> updateLot(@RequestBody @Valid Lot lot, @PathVariable Long id) {
+    Lot savedLot = lotRepository.save(lot);
+    return ResponseEntity.ok(savedLot);
   }
 }
