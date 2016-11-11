@@ -11,7 +11,7 @@
           <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Add Lot
         </button>
 
-        <lot-modal #lotModal="lotModal"></lot-modal>
+        <lot-modal #lotModal="lotModal" (addLot)="addLot($event)"></lot-modal>
       </div>
 
       <div class="row">

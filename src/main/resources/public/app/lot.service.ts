@@ -45,8 +45,9 @@ export class LotService {
       .map(resp => resp.json() as User);
   }
 
-  saveLot(lot: Lot): Observable<any> {
-    return this.http.post(`${this.lotsUrl}`, lot);
+  saveLot(lot: Lot): Observable<Lot> {
+    return this.http.post(`${this.lotsUrl}`, lot)
+      .map(resp => resp.json() as Lot);
   }
 
   updateLot(lot: Lot): Observable<any> {

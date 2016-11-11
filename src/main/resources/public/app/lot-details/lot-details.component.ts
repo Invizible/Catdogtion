@@ -43,9 +43,6 @@ export class LotDetailsComponent implements OnInit {
     this.location.back();
   }
 
-  updateLot(lot: Lot): void {
-  }
-
   removeLot(lot: Lot): void {
     this.lotService.deleteLot(lot.id).subscribe(
       resp => this.router.navigate(['/my-lots'])

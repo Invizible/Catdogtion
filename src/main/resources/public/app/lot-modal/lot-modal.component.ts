@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, NgZone, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, NgZone, Input, Output, EventEmitter } from '@angular/core';
 import { ModalDirective } from 'ng2-bootstrap';
 import { Lot } from '../lot';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
@@ -27,6 +27,9 @@ export class LotModalComponent implements OnInit {
 
   @Input()
   lot: Lot = new Lot();
+
+  @Output()
+  addLot: EventEmitter<any> = new EventEmitter();
 
   constructor(private cookieService: CookieService,
               private imageService: ImageService,
@@ -92,7 +95,12 @@ export class LotModalComponent implements OnInit {
       response => ({id: JSON.parse(response.response).id})
     );
     this.lotService.saveLot(this.lot)
-      .subscribe(resp => this.router.navigate(['/home']));
+      .subscribe(lot => {
+        this.addLot.emit(lot);
+        this.lot = new Lot();
+        this.responses = [];
+        this.lotModal.hide()
+      });
   }
 
   private updateLot() {
@@ -103,7 +111,7 @@ export class LotModalComponent implements OnInit {
       }
     );
     this.lotService.updateLot(this.lot)
-      .subscribe(resp => resp);
+      .subscribe(resp => this.lotModal.hide());
   }
 
   removeImage(response: any): void {

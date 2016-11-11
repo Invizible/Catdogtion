@@ -27,4 +27,8 @@ export class HomeComponent implements OnInit {
     );
   }
 
+  addLot(lot): void {
+    this.lots.push(lot);
+  }
+
 }

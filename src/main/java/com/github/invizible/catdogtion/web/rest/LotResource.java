@@ -18,6 +18,7 @@ import javax.validation.Valid;
 
 @RepositoryRestController
 @ResponseBody
+@RequestMapping("/lots")
 public class LotResource {
 
   @Autowired
@@ -29,7 +30,7 @@ public class LotResource {
   @Autowired
   private RepositoryEntityLinks entityLinks;
 
-  @PostMapping("/lots")
+  @PostMapping
   public ResponseEntity<?> saveLot(@RequestBody @Valid Lot lot) {
     if (lot.getId() != null) {
       return ResponseEntity.badRequest().body("New lot can't already have an id");
@@ -42,8 +43,13 @@ public class LotResource {
       .body(savedLot);
   }
 
-  @PutMapping("/lots/{id}")
-  public ResponseEntity<?> updateLot(@RequestBody @Valid Lot lot, @PathVariable Long id) {
+  @PutMapping("/{id}")
+  public ResponseEntity<?> updateLot(@RequestBody @Valid Lot lot) {
+    if (lot.getId() == null) {
+      return saveLot(lot);
+    }
+
+    lot.setAuctioneer(userRepository.findCurrentUser());
     Lot savedLot = lotRepository.save(lot);
     return ResponseEntity.ok(savedLot);
   }
