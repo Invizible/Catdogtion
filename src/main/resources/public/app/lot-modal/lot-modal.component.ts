@@ -29,7 +29,7 @@ export class LotModalComponent implements OnInit {
   lot: Lot = new Lot();
 
   @Output()
-  addLot: EventEmitter<any> = new EventEmitter();
+  addLot: EventEmitter<Lot> = new EventEmitter();
 
   constructor(private cookieService: CookieService,
               private imageService: ImageService,
