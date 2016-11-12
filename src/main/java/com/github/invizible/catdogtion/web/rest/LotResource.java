@@ -1,14 +1,16 @@
 package com.github.invizible.catdogtion.web.rest;
 
+import com.github.invizible.catdogtion.domain.Auction;
 import com.github.invizible.catdogtion.domain.Lot;
+import com.github.invizible.catdogtion.repository.AuctionRepository;
 import com.github.invizible.catdogtion.repository.LotRepository;
 import com.github.invizible.catdogtion.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
 import org.springframework.hateoas.Resource;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
+
+import java.time.ZonedDateTime;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
@@ -32,7 +36,13 @@ public class LotResource {
   private UserRepository userRepository;
 
   @Autowired
+  private AuctionRepository auctionRepository;
+
+  @Autowired
   private RepositoryEntityLinks entityLinks;
+
+  @Value("${auction.startDateOffset}")
+  private long auctionStartDateOffsetInMinutes;
 
   @PostMapping
   public ResponseEntity<?> saveLot(@RequestBody @Valid Lot lot) {
@@ -43,12 +53,21 @@ public class LotResource {
     lot.setAuctioneer(userRepository.findCurrentUser());
     Lot savedLot = lotRepository.save(lot);
 
+    createAuction(savedLot);
+
     Resource<Lot> lotResource = new Resource<>(savedLot);
     lotResource.add(linkTo(methodOn(LotResource.class).saveLot(savedLot)).withSelfRel());
 
     return ResponseEntity
       .created(entityLinks.linkForSingleResource(Lot.class, savedLot.getId()).toUri())
       .body(lotResource);
+  }
+
+  private void createAuction(Lot lot) {
+    Auction auction = new Auction();
+    auction.setLot(lot);
+    auction.setStartDate(ZonedDateTime.now().plusMinutes(auctionStartDateOffsetInMinutes));
+    auctionRepository.save(auction);
   }
 
   @PutMapping("/{id}")

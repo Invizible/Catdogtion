@@ -1,14 +1,16 @@
 package com.github.invizible.catdogtion.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.Future;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
@@ -22,7 +24,10 @@ public class Auction {
   @GeneratedValue
   private Long id;
 
-  @NotEmpty
+  @JsonIgnore
+  @OneToOne(cascade = CascadeType.ALL, optional = false)
+  private Lot lot;
+
   @ManyToMany
   private Set<User> participants = new HashSet<>();
 
@@ -31,7 +36,7 @@ public class Auction {
   private ZonedDateTime startDate = ZonedDateTime.now();
 
   @Column
-  private ZonedDateTime endDate = ZonedDateTime.now();
+  private ZonedDateTime endDate;
 
   @Column
   private BigDecimal wonPrice;

@@ -2,7 +2,19 @@
   <div class="page-header">
     <h1>
       Details <small>{{lot.name}}</small>
-      <small class="pull-right">Creation date: <span class="label label-info">{{lot.creationDate | date}}</span></small>
+
+      <div class="pull-right text-right">
+        <div class="row">
+          <div class="col-md-12">
+            <small>Creation date: <span class="label label-info">{{lot.creationDate | date:'medium'}}</span></small>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <small>Auction will start: <span class="label label-info">{{auction.startDate | date:'medium'}}</span></small>
+          </div>
+        </div>
+      </div>
     </h1>
 
     <div *ngIf="authenticatedUser.username == lot.auctioneer?.username">
@@ -12,7 +24,7 @@
 
       <lot-modal #lotModal="lotModal" [lot]="lot"></lot-modal>
 
-      <a (click)="removeLot(lot)" class="btn btn-danger" role="button">
+      <a (click)="removeLot()" class="btn btn-danger" role="button">
         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>Delete this Lot
       </a>
     </div>
@@ -26,11 +38,16 @@
 
   <div class="jumbotron">
     <div class="row">
+      <div class="col-md-offset-8 col-md-4">
+        <p class="text-right">Registered <span class="label label-info">{{auction.participants.length}}</span> users</p>
+      </div>
+    </div>
+    <div class="row">
       <div class="col-md-8">
         <p>Starting price: <span class="label label-info">{{lot.startingPrice | currency:'UAH'}}</span></p>
       </div>
-      <div class=" col-md-4">
-        <button class="btn btn-success pull-right">Participate</button>
+      <div class="col-md-4">
+        <button class="btn btn-success btn-lg pull-right" (click)="participate()">Participate</button>
       </div>
     </div>
 

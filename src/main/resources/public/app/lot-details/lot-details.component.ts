@@ -5,6 +5,8 @@ import { LotService } from '../lot.service';
 import { Lot } from '../lot';
 import {User} from "../user";
 import {AccountService} from "../account.service";
+import { Auction } from '../auction';
+import { AuctionService } from '../auction.service';
 
 @Component({
   selector: 'lot-details',
@@ -14,13 +16,15 @@ import {AccountService} from "../account.service";
 export class LotDetailsComponent implements OnInit {
   lot: Lot = new Lot();
   authenticatedUser: User = new User();
+  auction: Auction = new Auction;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private location: Location,
     private lotService: LotService,
-    private accountService: AccountService
+    private accountService: AccountService,
+    private auctionService: AuctionService
   ) { }
 
   ngOnInit() {
@@ -32,20 +36,28 @@ export class LotDetailsComponent implements OnInit {
           this.lotService.getLotImages(id).subscribe(images => this.lot.images = images)
         }
       );
+
+      this.lotService.getAuctionByLotId(id).subscribe(auction => this.auction = auction);
     });
 
     this.accountService.getAuthenticatedUser().subscribe(
       user => this.authenticatedUser = user
-    )
+    );
   }
 
   goBack(): void {
     this.location.back();
   }
 
-  removeLot(lot: Lot): void {
-    this.lotService.deleteLot(lot.id).subscribe(
+  removeLot(): void {
+    this.lotService.deleteLot(this.lot.id).subscribe(
       resp => this.router.navigate(['/my-lots'])
+    );
+  }
+
+  participate(): void {
+    this.auctionService.addParticipantForAuction(this.auction.id).subscribe(
+      auction => this.auction = auction
     );
   }
 

@@ -4,7 +4,6 @@ import { Lot } from '../lot';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 import { ImageService } from '../image.service';
 import { LotService } from '../lot.service';
-import { Router } from '@angular/router';
 import { Image } from '../image';
 
 @Component({
@@ -32,10 +31,11 @@ export class LotModalComponent implements OnInit {
   @Output()
   addLot: EventEmitter<Lot> = new EventEmitter<Lot>();
 
-  constructor(private cookieService: CookieService,
-              private imageService: ImageService,
-              private lotService: LotService,
-              private router: Router) {
+  constructor(
+    private cookieService: CookieService,
+    private imageService: ImageService,
+    private lotService: LotService,
+  ) {
   }
 
   ngOnInit() {

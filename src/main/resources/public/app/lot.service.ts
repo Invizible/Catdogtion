@@ -5,6 +5,7 @@ import { Lot } from './lot';
 import { Image } from './image';
 import { User } from './user';
 import { ImageService } from "./image.service";
+import { Auction } from './auction';
 
 @Injectable()
 export class LotService {
@@ -37,7 +38,7 @@ export class LotService {
 
   getLot(id: number): Observable<Lot> {
     return this.http.get(`${this.lotsUrl}/${id}?projection=withAuctioneerAndCharacteristics`)
-      .map(resp => resp.json() as Lot);
+      .map(this.transformResponseToLot());
   }
 
   getLotAuctioneer(id: number): Observable<User> {
@@ -47,7 +48,11 @@ export class LotService {
 
   saveLot(lot: Lot): Observable<Lot> {
     return this.http.post(`${this.lotsUrl}`, lot)
-      .map(resp => resp.json() as Lot);
+      .map(this.transformResponseToLot());
+  }
+
+  private transformResponseToLot() {
+    return resp => resp.json() as Lot;
   }
 
   updateLot(lot: Lot): Observable<any> {
@@ -56,5 +61,10 @@ export class LotService {
 
   deleteLot(id: number): Observable<any> {
     return this.http.delete(`${this.lotsUrl}/${id}`);
+  }
+
+  getAuctionByLotId(id: number): Observable<Auction> {
+    return this.http.get(`${this.lotsUrl}/${id}/auction?projection=withParticipantsAndWinner`)
+      .map(resp => resp.json() as Auction);
   }
 }

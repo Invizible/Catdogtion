@@ -22,6 +22,7 @@ import { UPLOAD_DIRECTIVES } from 'ng2-uploader/ng2-uploader';
 import { CookieService } from "angular2-cookie/services/cookies.service";
 import { ImageService } from "./image.service";
 import { MarkdownToHtmlPipe } from './markdown-to-html.pipe';
+import { AuctionService } from './auction.service';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { MarkdownToHtmlPipe } from './markdown-to-html.pipe';
     LotService,
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     CookieService,
-    ImageService
+    ImageService,
+    AuctionService
   ],
   bootstrap: [AppComponent]
 })

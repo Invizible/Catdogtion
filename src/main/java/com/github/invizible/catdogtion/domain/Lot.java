@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -53,6 +54,9 @@ public class Lot {
 
   @ManyToOne(optional = false)
   private User auctioneer;
+
+  @OneToOne(cascade = CascadeType.ALL, mappedBy = "lot")
+  private Auction auction;
 
   @ManyToMany
   private Set<Characteristic> characteristics = new HashSet<>();
