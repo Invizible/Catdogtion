@@ -3,6 +3,7 @@ package com.github.invizible.catdogtion.domain;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -38,7 +39,7 @@ public class Lot {
   @Column(nullable = false)
   private String description;
 
-  @OneToMany
+  @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
   @Size(min = 1)
   private Set<Image> images = new HashSet<>();
 

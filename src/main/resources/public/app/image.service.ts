@@ -13,8 +13,4 @@ export class ImageService {
   convertToBase64Image(image: any): string {
     return `data:${image.contentType};base64,${image.image}`;
   }
-
-  deleteImage(id: number): Observable<any> {
-    return this.http.delete(`${this.url}/${id}`);
-  }
 }

@@ -5,6 +5,7 @@ import { CookieService } from 'angular2-cookie/services/cookies.service';
 import { ImageService } from '../image.service';
 import { LotService } from '../lot.service';
 import { Router } from '@angular/router';
+import { Image } from '../image';
 
 @Component({
   selector: 'lot-modal',
@@ -50,11 +51,10 @@ export class LotModalComponent implements OnInit {
   }
 
   showModal(): void {
+    this.responses = []; //clear previous images
+
     this.lot.images.forEach(
-      image => this.responses.push({image: {
-        base64: image.image,
-        id: image.id
-      }})
+      image => this.responses.push({image: image})
     );
     this.lotModal.show();
   }
@@ -67,14 +67,16 @@ export class LotModalComponent implements OnInit {
       let total = 0;
       let uploaded = 0;
       this.responses.forEach(resp => {
+        if (this.isImageUploaded(resp)) {
+          return;
+        }
+
         total += resp.progress.total;
         uploaded += resp.progress.loaded;
         if (resp.response) {
           let image = JSON.parse(resp.response);
-          resp.image = {
-            base64: this.imageService.convertToBase64Image(image),
-            id: image.id
-          };
+          resp.image = new Image(this.imageService.convertToBase64Image(image), image.id);
+          this.lot.images.push(resp.image);
         }
       });
       let percent = Math.floor(uploaded / total * 100);
@@ -84,6 +86,10 @@ export class LotModalComponent implements OnInit {
         this.progress = percent;
       });
     }
+  }
+
+  private isImageUploaded(resp): boolean {
+    return resp.image;
   }
 
   save(): void {
@@ -104,19 +110,14 @@ export class LotModalComponent implements OnInit {
   }
 
   private updateLot() {
-    this.lot.images = this.responses.map(
-      response => {
-        response.image.base64 = null;
-        return {id: response.image.id};
-      }
-    );
-    this.lotService.updateLot(this.lot)
+    let lot: Lot = Object.assign({}, this.lot); //make a clone, because we will spoil it
+    lot.images = this.responses.map(response => ({id: response.image.id}));
+    this.lotService.updateLot(lot)
       .subscribe(resp => this.lotModal.hide());
   }
 
   removeImage(response: any): void {
-    this.imageService.deleteImage(response.image.id).subscribe(
-      () => this.responses = this.responses.filter(resp => resp.id != response.id)
-    );
+    this.responses = this.responses.filter(resp => resp.image.id != response.image.id);
+    this.lot.images = this.lot.images.filter(img => img.id != response.image.id);
   }
 }

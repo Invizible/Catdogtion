@@ -93,7 +93,7 @@
             <div *ngFor="let response of responses" class="col-xs-4 col-md-3">
               <div class="thumbnail">
                 <a (click)="removeImage(response)" class="btn btn-danger pull-right" role="button"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
-                <img [src]="response?.image?.base64" height="100"/>
+                <img [src]="response?.image?.image" height="100"/>
               </div>
             </div>
           </div>

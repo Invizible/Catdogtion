@@ -6,6 +6,7 @@ import com.github.invizible.catdogtion.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
+import org.springframework.hateoas.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RepositoryRestController
 @ResponseBody
@@ -38,9 +42,13 @@ public class LotResource {
 
     lot.setAuctioneer(userRepository.findCurrentUser());
     Lot savedLot = lotRepository.save(lot);
+
+    Resource<Lot> lotResource = new Resource<>(savedLot);
+    lotResource.add(linkTo(methodOn(LotResource.class).saveLot(savedLot)).withSelfRel());
+
     return ResponseEntity
       .created(entityLinks.linkForSingleResource(Lot.class, savedLot.getId()).toUri())
-      .body(savedLot);
+      .body(lotResource);
   }
 
   @PutMapping("/{id}")
@@ -51,6 +59,9 @@ public class LotResource {
 
     lot.setAuctioneer(userRepository.findCurrentUser());
     Lot savedLot = lotRepository.save(lot);
-    return ResponseEntity.ok(savedLot);
+
+    Resource<Lot> lotResource = new Resource<>(savedLot);
+    lotResource.add(linkTo(methodOn(LotResource.class).updateLot(savedLot)).withSelfRel());
+    return ResponseEntity.ok(lotResource);
   }
 }
