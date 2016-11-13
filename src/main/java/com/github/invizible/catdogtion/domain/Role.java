@@ -1,6 +1,7 @@
 package com.github.invizible.catdogtion.domain;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "authorities")
 @Data
+@EqualsAndHashCode(exclude = {"id"})
 public class Role {
   @Id
   @GeneratedValue

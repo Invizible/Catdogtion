@@ -1,6 +1,7 @@
 package com.github.invizible.catdogtion.domain;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Column;
@@ -12,6 +13,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Data
+@EqualsAndHashCode(exclude = {"id"})
 public class Image {
   private static final String DEFAULT_CONTENT_TYPE = "image/jpeg";
 

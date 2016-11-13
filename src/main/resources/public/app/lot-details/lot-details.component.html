@@ -39,7 +39,9 @@
   <div class="jumbotron">
     <div class="row">
       <div class="col-md-offset-8 col-md-4">
-        <p class="text-right">Registered <span class="label label-info">{{auction.participants.length}}</span> users</p>
+        <p class="text-right">
+          Registered <span class="label label-info">{{auction.participants.length}}</span> user<span *ngIf="auction.participants.length > 1">s</span>
+        </p>
       </div>
     </div>
     <div class="row">

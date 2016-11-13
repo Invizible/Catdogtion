@@ -1,6 +1,7 @@
 package com.github.invizible.catdogtion.domain;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,6 +14,7 @@ import java.util.Set;
 
 @Entity
 @Data
+@EqualsAndHashCode(exclude = {"id"})
 public class Characteristic {
   @Id
   @GeneratedValue

@@ -1,6 +1,7 @@
 package com.github.invizible.catdogtion.domain;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.CascadeType;
@@ -25,6 +26,7 @@ import java.util.Set;
  */
 @Entity
 @Data
+@EqualsAndHashCode(exclude = {"id", "auction"})
 public class Lot {
   @Id
   @GeneratedValue
@@ -39,6 +41,9 @@ public class Lot {
   @Length(min = 2)
   @Column(nullable = false)
   private String description;
+
+  @Column(nullable = false)
+  private Boolean active = true;
 
   @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
   @Size(min = 1)

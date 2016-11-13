@@ -5,6 +5,7 @@ import com.github.invizible.catdogtion.domain.Lot;
 import com.github.invizible.catdogtion.repository.AuctionRepository;
 import com.github.invizible.catdogtion.repository.LotRepository;
 import com.github.invizible.catdogtion.repository.UserRepository;
+import com.github.invizible.catdogtion.service.AuctionScheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
@@ -41,7 +42,10 @@ public class LotResource {
   @Autowired
   private RepositoryEntityLinks entityLinks;
 
-  @Value("${auction.startDateOffset}")
+  @Autowired
+  private AuctionScheduler auctionScheduler;
+
+  @Value("${auction.startDateOffsetInMinutes}")
   private long auctionStartDateOffsetInMinutes;
 
   @PostMapping
@@ -67,7 +71,9 @@ public class LotResource {
     Auction auction = new Auction();
     auction.setLot(lot);
     auction.setStartDate(ZonedDateTime.now().plusMinutes(auctionStartDateOffsetInMinutes));
-    auctionRepository.save(auction);
+    Auction savedAuction = auctionRepository.save(auction);
+
+    auctionScheduler.scheduleAuctionStartDateCheck(savedAuction);
   }
 
   @PutMapping("/{id}")

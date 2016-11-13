@@ -27,8 +27,7 @@ public class AuctionResource {
   private UserRepository userRepository;
 
   @PostMapping("/{id}/participants")
-  public ResponseEntity<?> addParticipant(@PathVariable Long id, UriComponentsBuilder ucb) {
-    Auction auction = auctionRepository.findOne(id);
+  public ResponseEntity<?> addParticipant(@PathVariable("id") Auction auction, UriComponentsBuilder ucb) {
     User currentUser = userRepository.findCurrentUser();
 
     auction.getParticipants().add(currentUser);
@@ -37,7 +36,7 @@ public class AuctionResource {
 
     URI uri = ucb
       .path("/auctions/")
-      .path(id.toString())
+      .path(auction.getId().toString())
       .path("/participants/")
       .path(currentUser.getId().toString())
       .build()

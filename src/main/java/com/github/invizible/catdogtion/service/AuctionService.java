@@ -1,0 +1,75 @@
+package com.github.invizible.catdogtion.service;
+
+import com.github.invizible.catdogtion.domain.Auction;
+import com.github.invizible.catdogtion.domain.AuctionStatus;
+import com.github.invizible.catdogtion.domain.Lot;
+import com.github.invizible.catdogtion.domain.User;
+import com.github.invizible.catdogtion.repository.AuctionRepository;
+import com.github.invizible.catdogtion.repository.LotRepository;
+import lombok.extern.apachecommons.CommonsLog;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Set;
+
+@Service
+@Transactional
+@CommonsLog
+public class AuctionService {
+  private static final int MIN_PARTICIPANTS_BOUNDARY = 1;
+
+  @Autowired
+  private AuctionRepository auctionRepository;
+
+  @Autowired
+  private LotRepository lotRepository;
+
+  public void startOrCloseAuction(Auction savedAuction) {
+    log.info(String.format("Scheduler for auction with id: %d has been started", savedAuction.getId()));
+
+    Auction auction = auctionRepository.findOne(savedAuction.getId());
+    Set<User> participants = auction.getParticipants();
+
+    if (participants.size() > MIN_PARTICIPANTS_BOUNDARY) {
+      startAuction(auction);
+    } else {
+      disableLotAndCloseAuction(auction);
+    }
+  }
+
+  public void disableLotAndCloseAuction(Auction auction) {
+    disableLot(auction.getLot());
+    closeAuction(auction);
+  }
+
+  private void startAuction(Auction auction) {
+    log.info(String.format("Starting the auction: %d", auction.getId()));
+
+    auction.setStatus(AuctionStatus.IN_PROGRESS);
+    auctionRepository.save(auction); //hope this will trigger findStartedAuctions to push auction back to the front-end
+
+    sendEmailNotificationToAllParticipants(auction);
+  }
+
+  //  @Async
+  private void sendEmailNotificationToAllParticipants(Auction auction) {
+    //TODO: implement
+    log.info(String.format("Sending invitations for auction: %d", auction.getId()));
+  }
+
+  private void disableLot(Lot lot) {
+    log.info(String.format("Disabling lot: %d", lot.getId()));
+
+    lot.setActive(false);
+    lotRepository.save(lot);
+  }
+
+  private void closeAuction(Auction auction) {
+    log.info(String.format("Closing auction: %d", auction.getId()));
+    //TODO: add log message saying that the auction was closed due to low participant count
+
+    auction.setStatus(AuctionStatus.CLOSED);
+    auctionRepository.save(auction);
+  }
+}

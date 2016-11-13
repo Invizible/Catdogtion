@@ -16,6 +16,11 @@ export class AuctionService {
       .map(this.transformResponseToAuction());
   }
 
+  getStartedAuctions(): Observable<Auction> {
+    return this.http.get(`${this.url}/search/findStartedAuctions`)
+      .map(this.transformResponseToAuction());
+  }
+
   private transformResponseToAuction() {
     return resp => resp.json() as Auction;
   }

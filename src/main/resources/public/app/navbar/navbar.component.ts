@@ -3,6 +3,7 @@ import { AccountService } from '../account.service';
 import { Subscription } from 'rxjs';
 import { User } from '../user';
 import { Router } from '@angular/router';
+import { AuctionService } from '../auction.service';
 
 @Component({
   selector: 'app-navbar',
@@ -17,7 +18,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   constructor(
     private accountService: AccountService,
-    private router: Router
+    private router: Router,
+    private auctionService: AuctionService
   ) { }
 
   ngOnInit() {
@@ -30,6 +32,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     );
 
     this.loadAuthenticatedUser();
+
+    this.auctionService.getStartedAuctions().subscribe(auction => this.router.navigate(['/lot-details/', auction.id]));
   }
 
   ngOnDestroy(): void {
