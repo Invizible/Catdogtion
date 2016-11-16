@@ -24,14 +24,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.userAuthenticatedSubscription = this.accountService.userAuthenticated.subscribe(
-      (authenticated) => {
-        if (authenticated) {
-          this.loadAuthenticatedUser();
-        }
-      }
-    );
-
-    this.loadAuthenticatedUser();
+      () => this.loadAuthenticatedUser());
 
     this.auctionService.getStartedAuctions().subscribe(auction => this.router.navigate(['/lot-details/', auction.id]));
   }
