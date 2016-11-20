@@ -15,10 +15,6 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
   @Query("select a from Auction a where a.status = 'CREATED' and a.startDate >= CURRENT_TIMESTAMP")
   List<Auction> findFutureNotStartedAuctions();
 
-//  @Query("select a from Auction a inner join a.participants p where p.username = ?#{principal.username} and a.status = 'IN_PROGRESS'")
-  @Query("select a from Auction a where a.status = 'IN_PROGRESS'")
-  List<Auction> findStartedAuctions();
-
   @RestResource(exported = false)
   @Override
   Auction save(Auction entity);

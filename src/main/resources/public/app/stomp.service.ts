@@ -6,7 +6,6 @@ import * as Stomp from 'stompjs';
 @Injectable()
 export class StompService {
   private stompClient;
-  private stompSubject : Subject<any> = new Subject<any>();
 
   constructor() {
     this.stompClient = Stomp.over(new WebSocket(this.url('ws')));
@@ -17,21 +16,21 @@ export class StompService {
     return ((l.protocol === "https:") ? "wss://" : "ws://") + l.host + l.pathname + s;
   }
 
-  public connect(endpointUrl: string): void {
+  public connect(endpointUrl: string): Observable<any> {
+    let stompSubject : Subject<any> = new Subject<any>();
+
     this.stompClient.connect({}, () => {
       this.stompClient.subscribe(endpointUrl, (stompResponse) => {
         // stompResponse = {command, headers, body with JSON
         // reflecting the object returned by Spring framework}
-        this.stompSubject.next(JSON.parse(stompResponse.body));
+        stompSubject.next(JSON.parse(stompResponse.body));
       });
     });
+
+    return stompSubject.asObservable();
   }
 
   public send(url: string, payload: string) {
     this.stompClient.send(url, {}, JSON.stringify({'inputField': payload}));
-  }
-
-  public getObservable() : Observable<any> {
-    return this.stompSubject.asObservable();
   }
 }

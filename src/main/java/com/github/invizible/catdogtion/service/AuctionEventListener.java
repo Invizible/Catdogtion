@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @CommonsLog
-public class StartedAuctionEventListener {
+public class AuctionEventListener {
 
   private static final String STARTED_AUCTION_DESTINATION = "/topic/startedAuction";
 
