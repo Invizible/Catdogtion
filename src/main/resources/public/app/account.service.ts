@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { User } from './user';
 import { Http, Headers } from '@angular/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Lot } from './lot';
 
 @Injectable()
 export class AccountService {
@@ -10,6 +9,8 @@ export class AccountService {
 
   private authenticatedUserSource = new BehaviorSubject<boolean>(false);
   userAuthenticated = this.authenticatedUserSource.asObservable();
+
+  private authenticatedUser: User;
 
   constructor(private http: Http) {
   }
@@ -26,16 +27,25 @@ export class AccountService {
       );
   }
 
-  getAuthenticatedUser(): Observable<User> {
-    return this.http.get(`${this.usersUrl}/search/findCurrentUser`)
-      .map(resp => resp.json() as User)
+  getAuthenticatedUser(callback): void {
+    let userObservable = this.authenticatedUser ? Observable.of(this.authenticatedUser)
+      : this.http.get(`${this.usersUrl}/search/findCurrentUser`)
+      .map(resp => this.authenticatedUser = resp.json() as User);
+
+    userObservable.subscribe(
+      callback,
+      () => console.log('No Authenticated User! Please sign in!')
+    );
   }
 
   logout(callback): void {
     this.http.post('/api/logout', '').subscribe(
       () => {
         // to get a new csrf token call the api
-        this.http.options('api').subscribe(callback);
+        this.http.options('api').subscribe(() => {
+          this.authenticatedUser = null;
+          callback();
+        });
       }
     );
   }

@@ -15,7 +15,7 @@ import { AuctionService } from '../auction.service';
 })
 export class LotDetailsComponent implements OnInit {
   lot: Lot = new Lot();
-  authenticatedUser: User = new User();
+  authenticatedUser: User;
   auction: Auction = new Auction;
 
   constructor(
@@ -40,9 +40,7 @@ export class LotDetailsComponent implements OnInit {
       this.lotService.getAuctionByLotId(id).subscribe(auction => this.auction = auction);
     });
 
-    this.accountService.getAuthenticatedUser().subscribe(
-      user => this.authenticatedUser = user
-    );
+    this.accountService.getAuthenticatedUser(user => this.authenticatedUser = user);
   }
 
   goBack(): void {

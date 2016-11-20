@@ -10,7 +10,6 @@ import com.github.invizible.catdogtion.repository.LotRepository;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +29,9 @@ public class AuctionService {
 
   @Autowired
   private ApplicationEventPublisher applicationEventPublisher;
+
+  @Autowired
+  private EmailService emailService;
 
   public void startOrCloseAuction(Auction savedAuction) {
     log.info(String.format("Scheduler for auction with id: %d has been started", savedAuction.getId()));
@@ -55,15 +57,9 @@ public class AuctionService {
     auction.setStatus(AuctionStatus.IN_PROGRESS);
     Auction savedAuction = auctionRepository.save(auction);
 
-    sendEmailNotificationToAllParticipants(savedAuction);
+    emailService.sendAuctionStartingNotificationToAllParticipants(savedAuction);
 
     applicationEventPublisher.publishEvent(new StartedAuctionEvent(savedAuction)); //fire an event, so we can send started auction back to the front (in future can be replaced with RxJava)
-  }
-
-  @Async
-  private void sendEmailNotificationToAllParticipants(Auction auction) {
-    //TODO: implement
-    log.info(String.format("Sending invitations for auction: %d", auction.getId()));
   }
 
   private void disableLot(Lot lot) {

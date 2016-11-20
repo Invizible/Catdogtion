@@ -34,11 +34,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   private loadAuthenticatedUser(): void {
-    this.accountService.getAuthenticatedUser()
-      .subscribe(
-        user => this.authenticatedUser = user,
-        error => console.log('No Authenticated User! Please sign in!')
-      );
+    this.accountService.getAuthenticatedUser(user => this.authenticatedUser = user);
   }
 
   logout(): void {

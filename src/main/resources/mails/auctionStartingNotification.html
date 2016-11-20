@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Do not miss your auction!</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<p>
+  Your
+  <a th:href="@{|${baseUrl}/#/lot-details/${auctionId}|}">auction</a>
+  is starting!
+</p>
+<p>
+  <span>Regards, </span>
+  <br/>
+  <em>Catdogtion</em>
+</p>
+</body>
+</html>

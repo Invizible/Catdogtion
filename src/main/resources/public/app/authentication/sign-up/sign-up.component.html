@@ -7,7 +7,7 @@
     </p>
   </div>
 
-  <form class="form-horizontal" (ngSubmit)="signUp()" #theForm="ngForm">
+  <form class="form-horizontal" (ngSubmit)="signUp()" #theForm="ngForm" novalidate>
     <!-- Username -->
     <div class="form-group required">
       <label for="username" class="col-sm-2 control-label">Username</label>
@@ -46,6 +46,19 @@
         </p>
         <p [hidden]="!(repeatPassword.dirty && password.value != repeatPassword.value)" class="alert alert-danger">
           Passwords should match
+        </p>
+      </div>
+    </div>
+
+    <!-- Email -->
+    <div class="form-group required">
+      <label for="email" class="col-sm-2 control-label">Email</label>
+      <div class="col-sm-4">
+        <input type="email" class="form-control" id="email"
+               required
+               [(ngModel)]="user.email" name="email" #email="ngModel" placeholder="some@email.com">
+        <p [hidden]="email.valid || email.pristine" class="alert alert-danger">
+          Email is required
         </p>
       </div>
     </div>
