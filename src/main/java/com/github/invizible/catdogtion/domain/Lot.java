@@ -2,6 +2,7 @@ package com.github.invizible.catdogtion.domain;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.CascadeType;
@@ -27,6 +28,7 @@ import java.util.Set;
 @Entity
 @Data
 @EqualsAndHashCode(exclude = {"id", "auction"})
+@ToString(exclude = {"images", "auction"})
 public class Lot {
   @Id
   @GeneratedValue

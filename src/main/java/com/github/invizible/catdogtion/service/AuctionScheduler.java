@@ -40,7 +40,9 @@ public class AuctionScheduler {
   }
 
   public void scheduleAuctionStartDateCheck(Auction savedAuction) {
-    taskScheduler.schedule(() -> auctionService.startOrCloseAuction(savedAuction), Date.from(savedAuction.getStartDate().toInstant()));
+    taskScheduler.schedule(
+      () -> auctionService.startOrCloseAuction(savedAuction),
+      Date.from(savedAuction.getStartDate().toInstant()));
   }
 
 }

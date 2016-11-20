@@ -9,15 +9,16 @@ export class StompService {
   private stompClient;
   private stompSubject : Subject<any> = new Subject<any>();
 
-  public connect(webSocketUrl: string, endpointUrl: string) : void {
-    let self = this;
-    let webSocket = new WebSocket(webSocketUrl);
-    this.stompClient = Stomp.over(webSocket);
+  constructor() {
+    this.stompClient = Stomp.over(new WebSocket('ws://localhost:9991/ws'));
+  }
+
+  public connect(endpointUrl: string): void {
     this.stompClient.connect({}, () => {
-      self.stompClient.subscribe(endpointUrl, function (stompResponse) {
+      this.stompClient.subscribe(endpointUrl, (stompResponse) => {
         // stompResponse = {command, headers, body with JSON
         // reflecting the object returned by Spring framework}
-        self.stompSubject.next(JSON.parse(stompResponse.body));
+        this.stompSubject.next(JSON.parse(stompResponse.body));
       });
     });
   }

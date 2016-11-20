@@ -3,6 +3,7 @@ package com.github.invizible.catdogtion.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Column;
@@ -22,6 +23,7 @@ import java.util.Set;
 @Table(name = "users")
 @Data
 @EqualsAndHashCode(exclude = {"id"})
+@ToString(exclude = {"password"})
 public class User {
   @Id
   @GeneratedValue

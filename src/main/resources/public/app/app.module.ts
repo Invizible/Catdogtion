@@ -23,6 +23,7 @@ import { CookieService } from "angular2-cookie/services/cookies.service";
 import { ImageService } from "./image.service";
 import { MarkdownToHtmlPipe } from './markdown-to-html.pipe';
 import { AuctionService } from './auction.service';
+import { StompService } from './stomp.service';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { AuctionService } from './auction.service';
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     CookieService,
     ImageService,
-    AuctionService
+    AuctionService,
+    StompService
   ],
   bootstrap: [AppComponent]
 })
