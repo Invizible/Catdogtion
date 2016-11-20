@@ -19,7 +19,7 @@ export class AuctionService {
   }
 
   getStartedAuctions(): Observable<Auction> {
-    return this.stompService.connect('/topic/startedAuction');
+    return this.stompService.connect('/user/queue/startedAuction');
   }
 
   private transformResponseToAuction() {
