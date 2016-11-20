@@ -4,10 +4,13 @@ import com.github.invizible.catdogtion.domain.Auction;
 import com.github.invizible.catdogtion.domain.AuctionStatus;
 import com.github.invizible.catdogtion.domain.Lot;
 import com.github.invizible.catdogtion.domain.User;
+import com.github.invizible.catdogtion.event.StartedAuctionEvent;
 import com.github.invizible.catdogtion.repository.AuctionRepository;
 import com.github.invizible.catdogtion.repository.LotRepository;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +27,9 @@ public class AuctionService {
 
   @Autowired
   private LotRepository lotRepository;
+
+  @Autowired
+  private ApplicationEventPublisher applicationEventPublisher;
 
   public void startOrCloseAuction(Auction savedAuction) {
     log.info(String.format("Scheduler for auction with id: %d has been started", savedAuction.getId()));
@@ -47,12 +53,14 @@ public class AuctionService {
     log.info(String.format("Starting the auction: %d", auction.getId()));
 
     auction.setStatus(AuctionStatus.IN_PROGRESS);
-    auctionRepository.save(auction); //hope this will trigger findStartedAuctions to push auction back to the front-end
+    Auction savedAuction = auctionRepository.save(auction);
 
-    sendEmailNotificationToAllParticipants(auction);
+    sendEmailNotificationToAllParticipants(savedAuction);
+
+    applicationEventPublisher.publishEvent(new StartedAuctionEvent(savedAuction)); //fire an event, so we can send started auction back to the front (in future can be replaced with RxJava)
   }
 
-  //  @Async
+  @Async
   private void sendEmailNotificationToAllParticipants(Auction auction) {
     //TODO: implement
     log.info(String.format("Sending invitations for auction: %d", auction.getId()));

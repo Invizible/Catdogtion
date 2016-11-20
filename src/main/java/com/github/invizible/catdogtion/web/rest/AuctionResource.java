@@ -7,7 +7,6 @@ import com.github.invizible.catdogtion.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,11 +43,5 @@ public class AuctionResource {
       .toUri();
 
     return ResponseEntity.created(uri).body(savedAuction);
-  }
-
-  @SendTo("/topic/startedAuction")
-  public Auction getStartedAuction() {
-    //TODO: implement
-    return null;
   }
 }
