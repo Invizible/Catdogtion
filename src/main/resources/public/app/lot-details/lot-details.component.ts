@@ -59,4 +59,8 @@ export class LotDetailsComponent implements OnInit {
     );
   }
 
+  auctionHasStarted(): boolean {
+    return this.auction.status == 'IN_PROGRESS';
+  }
+
 }

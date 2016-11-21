@@ -1,6 +1,7 @@
 package com.github.invizible.catdogtion.domain.projections;
 
 import com.github.invizible.catdogtion.domain.Auction;
+import com.github.invizible.catdogtion.domain.AuctionStatus;
 import com.github.invizible.catdogtion.domain.User;
 import org.springframework.data.rest.core.config.Projection;
 
@@ -21,4 +22,6 @@ public interface AuctionWithParticipantsAndWinner {
   BigDecimal getWonPrice();
 
   User getWinner();
+
+  AuctionStatus getStatus();
 }

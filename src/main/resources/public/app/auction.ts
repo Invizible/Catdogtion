@@ -7,4 +7,5 @@ export class Auction {
   endDate: Date;
   wonPrice: number;
   winner: User;
+  status: string;
 }
