@@ -8,7 +8,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.ApplicationEventMulticaster;
 import org.springframework.context.event.SimpleApplicationEventMulticaster;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
+import org.springframework.data.auditing.DateTimeProvider;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -16,12 +18,15 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import javax.validation.Validator;
+import java.time.ZonedDateTime;
+import java.util.GregorianCalendar;
 
 @EnableScheduling
 @EnableAsync
 @EntityScan(
 	basePackageClasses = { CatdogtionApplication.class, Jsr310JpaConverters.class }
 )
+@EnableJpaAuditing(dateTimeProviderRef = "dateTimeProvider")
 @SpringBootApplication
 public class CatdogtionApplication {
 
@@ -46,6 +51,11 @@ public class CatdogtionApplication {
     SimpleApplicationEventMulticaster eventMulticaster = new SimpleApplicationEventMulticaster();
     eventMulticaster.setTaskExecutor(new SimpleAsyncTaskExecutor());
     return eventMulticaster;
+  }
+
+  @Bean
+  public DateTimeProvider dateTimeProvider() {
+    return () -> GregorianCalendar.from(ZonedDateTime.now());
   }
 
 	public static void main(String[] args) {

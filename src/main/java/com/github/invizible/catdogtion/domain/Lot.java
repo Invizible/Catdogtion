@@ -5,10 +5,12 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
@@ -27,6 +29,7 @@ import java.util.Set;
  * @author Alex
  */
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Data
 @EqualsAndHashCode(exclude = {"id", "auction"})
 @ToString(exclude = {"images", "auction"})
@@ -57,6 +60,7 @@ public class Lot {
   @Column(nullable = false)
   private BigDecimal startingPrice = BigDecimal.valueOf(0);
 
+  @Column(nullable = false)
   @CreatedDate
   private ZonedDateTime creationDate;
 
