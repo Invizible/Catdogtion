@@ -5,7 +5,7 @@ export class Auction {
   participants: User[] = [];
   startDate: Date;
   endDate: Date;
-  wonPrice: number;
+  highestPrice: number;
   winner: User;
   status: string;
 }

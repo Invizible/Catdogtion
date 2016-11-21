@@ -58,9 +58,4 @@ export class LotDetailsComponent implements OnInit {
       auction => this.auction = auction
     );
   }
-
-  auctionHasStarted(): boolean {
-    return this.auction.status == 'IN_PROGRESS';
-  }
-
 }

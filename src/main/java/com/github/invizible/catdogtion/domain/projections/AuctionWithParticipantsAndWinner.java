@@ -19,7 +19,7 @@ public interface AuctionWithParticipantsAndWinner {
 
   ZonedDateTime getEndDate();
 
-  BigDecimal getWonPrice();
+  BigDecimal getHighestPrice();
 
   User getWinner();
 

@@ -47,7 +47,7 @@ public class Auction {
   private AuctionStatus status = AuctionStatus.CREATED;
 
   @Column
-  private BigDecimal wonPrice;
+  private BigDecimal highestPrice;
 
   @ManyToOne
   private User winner;

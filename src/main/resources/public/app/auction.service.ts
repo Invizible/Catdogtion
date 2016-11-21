@@ -3,6 +3,7 @@ import { Http } from '@angular/http';
 import { Observable } from 'rxjs';
 import { Auction } from './auction';
 import { StompService } from './stomp.service';
+import { Log } from './log';
 
 @Injectable()
 export class AuctionService {
@@ -24,5 +25,10 @@ export class AuctionService {
 
   private transformResponseToAuction() {
     return resp => resp.json() as Auction;
+  }
+
+  getLogsForAuction(id: number): Observable<Log[]> {
+    return this.http.get(`${this.url}/${id}/logs?sort=time,desc`)
+      .map(resp => resp.json()._embedded.logs as Log[]);
   }
 }

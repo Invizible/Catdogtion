@@ -71,6 +71,7 @@ public class LotResource {
     Auction auction = new Auction();
     auction.setLot(lot);
     auction.setStartDate(ZonedDateTime.now().plusMinutes(auctionStartDateOffsetInMinutes));
+    auction.setHighestPrice(lot.getStartingPrice());
     Auction savedAuction = auctionRepository.save(auction);
 
     auctionScheduler.scheduleAuctionStartDateCheck(savedAuction);

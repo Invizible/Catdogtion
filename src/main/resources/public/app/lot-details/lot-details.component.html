@@ -66,7 +66,7 @@
     </div>
   </div>
 
-  <auction-controls *ngIf="auctionHasStarted()" [auction]="auction"></auction-controls>
+  <auction-controls *ngIf="auction.id" [auction]="auction"></auction-controls>
 
   <button type="button" class="btn btn-primary" (click)="goBack()"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>Back</button>
 </div>

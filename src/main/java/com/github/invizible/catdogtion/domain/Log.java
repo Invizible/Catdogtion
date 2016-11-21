@@ -26,4 +26,10 @@ public class Log {
   @Column(nullable = false)
   @CreatedDate
   private ZonedDateTime time;
+
+  public Log() {}
+
+  public Log(String message) {
+    this.message = message;
+  }
 }
