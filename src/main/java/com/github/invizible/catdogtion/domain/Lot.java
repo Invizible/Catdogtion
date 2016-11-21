@@ -28,8 +28,8 @@ import java.util.Set;
  */
 @Entity
 @Data
-@EqualsAndHashCode(exclude = {"id", "auction-controls"})
-@ToString(exclude = {"images", "auction-controls"})
+@EqualsAndHashCode(exclude = {"id", "auction"})
+@ToString(exclude = {"images", "auction"})
 public class Lot {
   @Id
   @GeneratedValue
