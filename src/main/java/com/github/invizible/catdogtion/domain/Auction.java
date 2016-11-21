@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
@@ -36,7 +37,7 @@ public class Auction {
   private Set<User> participants = new HashSet<>();
 
   @Column(nullable = false)
-  private ZonedDateTime startDate = ZonedDateTime.now();
+  private ZonedDateTime startDate;
 
   @Column
   private ZonedDateTime endDate;
@@ -50,4 +51,7 @@ public class Auction {
 
   @ManyToOne
   private User winner;
+
+  @OneToMany(cascade = CascadeType.ALL)
+  private Set<Log> logs = new HashSet<>();
 }

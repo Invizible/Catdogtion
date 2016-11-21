@@ -16,7 +16,7 @@ import { AuctionService } from '../auction.service';
 export class LotDetailsComponent implements OnInit {
   lot: Lot = new Lot();
   authenticatedUser: User;
-  auction: Auction = new Auction;
+  auction: Auction = new Auction();
 
   constructor(
     private route: ActivatedRoute,

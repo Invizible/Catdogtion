@@ -24,6 +24,7 @@ import { ImageService } from "./image.service";
 import { MarkdownToHtmlPipe } from './markdown-to-html.pipe';
 import { AuctionService } from './auction.service';
 import { StompService } from './stomp.service';
+import { AuctionControlsComponent } from './auction-controls/auction-controls.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { StompService } from './stomp.service';
     LotDetailsComponent,
     LotModalComponent,
     UPLOAD_DIRECTIVES,
-    MarkdownToHtmlPipe
+    MarkdownToHtmlPipe,
+    AuctionControlsComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,28 @@
+<div class="panel panel-danger">
+  <div class="panel-heading">
+    <h3 class="panel-title">Auction controls</h3>
+  </div>
+  <div class="panel-body">
+    <form class="form-inline">
+      <span>Highest bet amount: {{auction.wonPrice | currency:'UAH'}}</span>
+
+      <div class="form-group">
+        <label class="sr-only" for="betAmount">Bet amount</label>
+        <div class="input-group">
+          <div class="input-group-addon">&#8372;</div>
+          <input type="number" class="form-control" id="betAmount" placeholder="Bet amount">
+          <div class="input-group-addon">.00</div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-lg btn-danger">Bet</button>
+    </form>
+  </div>
+
+  <h4>Logs</h4>
+  <table class="table table-striped">
+    <tr *ngFor="let log of logs">
+      <td class="col-md-2 text-center">{{log.time | date:'medium'}}</td>
+      <td class="col-md-8">{{log.message}}</td>
+    </tr>
+  </table>
+</div>

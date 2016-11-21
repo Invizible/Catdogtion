@@ -21,7 +21,7 @@ public class AuctionEventListener {
   private void handleStartedAuctionEvent(StartedAuctionEvent startedAuctionEvent) {
     Auction startedAuction = startedAuctionEvent.getAuction();
 
-    log.info(String.format("Pushing started auction to the front: %s", startedAuction));
+    log.info(String.format("Pushing started auction-controls to the front: %s", startedAuction));
 
     startedAuction.getParticipants().forEach(participant ->
       messagingTemplate.convertAndSendToUser(participant.getUsername(), STARTED_AUCTION_DESTINATION, startedAuction));

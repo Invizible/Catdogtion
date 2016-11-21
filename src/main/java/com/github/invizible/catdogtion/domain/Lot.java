@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -27,8 +28,8 @@ import java.util.Set;
  */
 @Entity
 @Data
-@EqualsAndHashCode(exclude = {"id", "auction"})
-@ToString(exclude = {"images", "auction"})
+@EqualsAndHashCode(exclude = {"id", "auction-controls"})
+@ToString(exclude = {"images", "auction-controls"})
 public class Lot {
   @Id
   @GeneratedValue
@@ -56,8 +57,8 @@ public class Lot {
   @Column(nullable = false)
   private BigDecimal startingPrice = BigDecimal.valueOf(0);
 
-  @Column(nullable = false)
-  private ZonedDateTime creationDate = ZonedDateTime.now();
+  @CreatedDate
+  private ZonedDateTime creationDate;
 
   @ManyToOne(optional = false)
   private User auctioneer;
