@@ -51,7 +51,7 @@ public class EmailService {
 
   @Async
   public void sendAuctionStartingNotificationToAllParticipants(Auction auction) {
-    log.info(String.format("Sending invitations for auction-controls: %d", auction.getId()));
+    log.info(String.format("Sending invitations for auction: %d", auction.getId()));
 
     String[] emailAddresses = auction.getParticipants().stream()
       .map(User::getEmail)
@@ -62,6 +62,6 @@ public class EmailService {
     context.setVariable(AUCTION_ID, auction.getId());
     String content = templateEngine.process("auctionStartingNotification", context);
 
-    sendEmail("Do not miss your auction-controls!", content, emailAddresses);
+    sendEmail("Do not miss your auction!", content, emailAddresses);
   }
 }

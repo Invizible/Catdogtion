@@ -34,7 +34,7 @@ public class AuctionService {
   private EmailService emailService;
 
   public void startOrCloseAuction(Auction savedAuction) {
-    log.info(String.format("Scheduler for auction-controls with id: %d has been started", savedAuction.getId()));
+    log.info(String.format("Scheduler for auction with id: %d has been started", savedAuction.getId()));
 
     Auction auction = auctionRepository.findOne(savedAuction.getId());
     Set<User> participants = auction.getParticipants();
@@ -52,14 +52,14 @@ public class AuctionService {
   }
 
   private void startAuction(Auction auction) {
-    log.info(String.format("Starting the auction-controls: %d", auction.getId()));
+    log.info(String.format("Starting the auction: %d", auction.getId()));
 
     auction.setStatus(AuctionStatus.IN_PROGRESS);
     Auction savedAuction = auctionRepository.save(auction);
 
     emailService.sendAuctionStartingNotificationToAllParticipants(savedAuction);
 
-    applicationEventPublisher.publishEvent(new StartedAuctionEvent(savedAuction)); //fire an event, so we can send started auction-controls back to the front (in future can be replaced with RxJava)
+    applicationEventPublisher.publishEvent(new StartedAuctionEvent(savedAuction)); //fire an event, so we can send started auction back to the front (in future can be replaced with RxJava)
   }
 
   private void disableLot(Lot lot) {
@@ -70,8 +70,8 @@ public class AuctionService {
   }
 
   private void closeAuction(Auction auction) {
-    log.info(String.format("Closing auction-controls: %d", auction.getId()));
-    //TODO: add log message saying that the auction-controls was closed due to low participant count
+    log.info(String.format("Closing auction: %d", auction.getId()));
+    //TODO: add log message saying that the auction was closed due to low participant count
 
     auction.setStatus(AuctionStatus.CLOSED);
     auctionRepository.save(auction);
