@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Auction } from './auction';
 import { StompService } from './stomp.service';
 import { Log } from './log';
+import { Bet } from './bet';
 
 @Injectable()
 export class AuctionService {
@@ -30,5 +31,9 @@ export class AuctionService {
   getLogsForAuction(id: number): Observable<Log[]> {
     return this.http.get(`${this.url}/${id}/logs?sort=time,desc`)
       .map(resp => resp.json()._embedded.logs as Log[]);
+  }
+
+  makeABet(auctionId: number, bet: Bet): Observable<any> {
+    return this.http.post(`${this.url}/${auctionId}/bets`, bet);
   }
 }

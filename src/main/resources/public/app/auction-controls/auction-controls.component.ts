@@ -3,6 +3,7 @@ import { Log } from '../log';
 import { Auction } from '../auction';
 import { AuctionService } from '../auction.service';
 import { Observable } from 'rxjs';
+import { Bet } from '../bet';
 
 @Component({
   selector: 'auction-controls',
@@ -10,6 +11,7 @@ import { Observable } from 'rxjs';
 })
 export class AuctionControlsComponent implements OnInit {
   logs: Observable<Log[]>;
+  bet: Bet = new Bet();
 
   @Input()
   auction: Auction;
@@ -28,5 +30,9 @@ export class AuctionControlsComponent implements OnInit {
 
   isAuctionCreated(): boolean {
     return this.auction.status == 'CREATED';
+  }
+
+  makeABet(): void {
+    this.auctionService.makeABet(this.auction.id, this.bet).subscribe();
   }
 }
