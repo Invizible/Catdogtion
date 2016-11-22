@@ -9,13 +9,15 @@ import com.github.invizible.catdogtion.event.StartedAuctionEvent;
 import com.github.invizible.catdogtion.repository.AuctionRepository;
 import com.github.invizible.catdogtion.repository.LogRepository;
 import com.github.invizible.catdogtion.repository.LotRepository;
+import com.github.invizible.catdogtion.repository.UserRepository;
+import com.github.invizible.catdogtion.util.MoneyUtils;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.DecimalFormat;
+import java.math.BigDecimal;
 import java.util.Set;
 
 @Service
@@ -25,7 +27,6 @@ public class AuctionService {
   private static final int MIN_PARTICIPANTS_BOUNDARY = 1;
   private static final String THE_AUCTION_WAS_CLOSED_LOG = "The auction was closed due to low participants count";
   private static final String THE_AUCTION_HAS_STARTED_LOG = "The auction has just started. Starting price is: %s";
-  private static final String MONEY_FORMAT = "#0.##";
 
   @Autowired
   private AuctionRepository auctionRepository;
@@ -41,6 +42,9 @@ public class AuctionService {
 
   @Autowired
   private EmailService emailService;
+
+  @Autowired
+  private UserRepository userRepository;
 
   public void startOrCloseAuction(Auction savedAuction) {
     log.info(String.format("Scheduler for auction with id: %d has been started", savedAuction.getId()));
@@ -63,7 +67,7 @@ public class AuctionService {
   private void startAuction(Auction auction) {
     log.info(String.format("Starting the auction: %d", auction.getId()));
 
-    String startingPrice = new DecimalFormat(MONEY_FORMAT).format(auction.getLot().getStartingPrice());
+    String startingPrice = MoneyUtils.format(auction.getLot().getStartingPrice());
     auction.getLogs().add(new Log(String.format(THE_AUCTION_HAS_STARTED_LOG, startingPrice)));
 
     auction.setStatus(AuctionStatus.IN_PROGRESS);
@@ -89,5 +93,29 @@ public class AuctionService {
     auction.setStatus(AuctionStatus.CLOSED);
     auction.setEndDate(log.getTime());
     auctionRepository.save(auction);
+  }
+
+  public boolean addABet(Long auctionId, BigDecimal newHighestPrice, String currentUserName) {
+    Auction currentAuction = auctionRepository.findOne(auctionId);
+
+    if (isNewHighestPriceBiggerThenCurrent(newHighestPrice, currentAuction)) {
+      //TODO: cancel and reschedule task
+      User currentUser = userRepository.findByUsername(currentUserName).get();
+      Log log = new Log(String.format("User %s %s made a bet: %s",
+        currentUser.getFirstName(),
+        currentUser.getLastName(),
+        MoneyUtils.format(newHighestPrice)));
+      currentAuction.getLogs().add(log);
+      currentAuction.setHighestPrice(newHighestPrice);
+      auctionRepository.save(currentAuction);
+      return true;
+    }
+
+    return false;
+  }
+
+  private boolean isNewHighestPriceBiggerThenCurrent(BigDecimal newHighestPrice, Auction currentAuction)
+  {
+    return newHighestPrice.compareTo(currentAuction.getHighestPrice()) > 0;
   }
 }

@@ -33,6 +33,8 @@ export class AuctionControlsComponent implements OnInit {
   }
 
   makeABet(): void {
-    this.auctionService.makeABet(this.auction.id, this.bet).subscribe();
+    this.auctionService.makeABet(this.auction.id, this.bet).subscribe(
+      () => this.auction.highestPrice = this.bet.bet
+    );
   }
 }

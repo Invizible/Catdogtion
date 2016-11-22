@@ -1,13 +1,8 @@
 package com.github.invizible.catdogtion.web.rest;
 
-import com.github.invizible.catdogtion.domain.Auction;
 import com.github.invizible.catdogtion.domain.Lot;
-import com.github.invizible.catdogtion.repository.AuctionRepository;
-import com.github.invizible.catdogtion.repository.LotRepository;
-import com.github.invizible.catdogtion.repository.UserRepository;
-import com.github.invizible.catdogtion.service.AuctionScheduler;
+import com.github.invizible.catdogtion.service.LotService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
 import org.springframework.hateoas.Resource;
@@ -20,8 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
 
-import java.time.ZonedDateTime;
-
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
@@ -31,22 +24,10 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 public class LotResource {
 
   @Autowired
-  private LotRepository lotRepository;
-
-  @Autowired
-  private UserRepository userRepository;
-
-  @Autowired
-  private AuctionRepository auctionRepository;
-
-  @Autowired
   private RepositoryEntityLinks entityLinks;
 
   @Autowired
-  private AuctionScheduler auctionScheduler;
-
-  @Value("${auction.startDateOffsetInMinutes}")
-  private long auctionStartDateOffsetInMinutes;
+  private LotService lotService;
 
   @PostMapping
   public ResponseEntity<?> saveLot(@RequestBody @Valid Lot lot) {
@@ -54,10 +35,8 @@ public class LotResource {
       return ResponseEntity.badRequest().body("New lot can't already have an id");
     }
 
-    lot.setAuctioneer(userRepository.findCurrentUser());
-    Lot savedLot = lotRepository.save(lot);
-
-    createAuction(savedLot);
+    Lot savedLot = lotService.saveLot(lot);
+    lotService.createAuction(savedLot);
 
     Resource<Lot> lotResource = new Resource<>(savedLot);
     lotResource.add(linkTo(methodOn(LotResource.class).saveLot(savedLot)).withSelfRel());
@@ -67,24 +46,13 @@ public class LotResource {
       .body(lotResource);
   }
 
-  private void createAuction(Lot lot) {
-    Auction auction = new Auction();
-    auction.setLot(lot);
-    auction.setStartDate(ZonedDateTime.now().plusMinutes(auctionStartDateOffsetInMinutes));
-    auction.setHighestPrice(lot.getStartingPrice());
-    Auction savedAuction = auctionRepository.save(auction);
-
-    auctionScheduler.scheduleAuctionStartDateCheck(savedAuction);
-  }
-
   @PutMapping
   public ResponseEntity<?> updateLot(@RequestBody @Valid Lot lot) {
     if (lot.getId() == null) {
       return saveLot(lot);
     }
 
-    lot.setAuctioneer(userRepository.findCurrentUser());
-    Lot savedLot = lotRepository.save(lot);
+    Lot savedLot = lotService.saveLot(lot);
 
     Resource<Lot> lotResource = new Resource<>(savedLot);
     lotResource.add(linkTo(methodOn(LotResource.class).updateLot(savedLot)).withSelfRel());
