@@ -77,7 +77,7 @@ public class LotResource {
     auctionScheduler.scheduleAuctionStartDateCheck(savedAuction);
   }
 
-  @PutMapping("/{id}")
+  @PutMapping
   public ResponseEntity<?> updateLot(@RequestBody @Valid Lot lot) {
     if (lot.getId() == null) {
       return saveLot(lot);

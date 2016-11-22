@@ -56,7 +56,7 @@ export class LotService {
   }
 
   updateLot(lot: Lot): Observable<any> {
-    return this.http.put(`${this.lotsUrl}/${lot.id}`, lot);
+    return this.http.put(`${this.lotsUrl}`, lot);
   }
 
   deleteLot(id: number): Observable<any> {
