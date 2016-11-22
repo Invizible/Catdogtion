@@ -18,7 +18,7 @@ import { CarouselModule } from 'ng2-bootstrap/components/carousel';
 import { LocationStrategy, HashLocationStrategy } from "@angular/common";
 import { LotModalComponent } from './lot-modal/lot-modal.component';
 import { ModalModule } from 'ng2-bootstrap/components/modal';
-import { UPLOAD_DIRECTIVES } from 'ng2-uploader/ng2-uploader';
+import { Ng2UploaderModule } from 'ng2-uploader';
 import { CookieService } from "angular2-cookie/services/cookies.service";
 import { ImageService } from "./image.service";
 import { MarkdownToHtmlPipe } from './markdown-to-html.pipe';
@@ -36,7 +36,6 @@ import { AuctionControlsComponent } from './auction-controls/auction-controls.co
     SearchComponent,
     LotDetailsComponent,
     LotModalComponent,
-    UPLOAD_DIRECTIVES,
     MarkdownToHtmlPipe,
     AuctionControlsComponent
   ],
@@ -48,7 +47,8 @@ import { AuctionControlsComponent } from './auction-controls/auction-controls.co
     AuthenticationModule,
     CarouselModule,
     ModalModule,
-    ProgressbarModule
+    ProgressbarModule,
+    Ng2UploaderModule
   ],
   providers: [
     AccountService,
