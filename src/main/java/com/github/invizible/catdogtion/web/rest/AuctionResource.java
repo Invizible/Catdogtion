@@ -61,8 +61,8 @@ public class AuctionResource {
 
   @PreAuthorize("@auctionRepository.findOne(#auctionId).participants.![username].contains(principal.username)")
   @PostMapping("/{id}/bets")
-  public ResponseEntity<?> makeABet(@PathVariable("id") Long auctionId, @RequestBody BetDTO betDTO, Principal principal) {
-    return auctionService.addABet(auctionId, betDTO.bet, principal.getName())
+  public ResponseEntity<?> makeBet(@PathVariable("id") Long auctionId, @RequestBody BetDTO betDTO, Principal principal) {
+    return auctionService.addBet(auctionId, betDTO.bet, principal.getName())
       ? ResponseEntity.ok().build()
       : ResponseEntity.badRequest().body("Bet size is less than current highest price!");
   }

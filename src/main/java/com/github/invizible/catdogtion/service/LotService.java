@@ -26,7 +26,7 @@ public class LotService {
   private UserRepository userRepository;
 
   @Value("${auction.startDateOffsetInMinutes}")
-  private long auctionStartDateOffsetInMinutes;
+  private int auctionStartDateOffsetInMinutes;
 
   @Autowired
   private AuctionScheduler auctionScheduler;

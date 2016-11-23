@@ -32,7 +32,7 @@ export class AuctionControlsComponent implements OnInit {
     return this.auction.status == 'CREATED';
   }
 
-  makeABet(): void {
+  makeBet(): void {
     this.auctionService.makeABet(this.auction.id, this.bet).subscribe(
       () => this.auction.highestPrice = this.bet.bet
     );
