@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 import { Auction } from './auction';
 import { StompService } from './stomp.service';
 import { Log } from './log';
@@ -29,7 +29,8 @@ export class AuctionService {
   }
 
   getLogsForAuction(id: number): Observable<Log[]> {
-    return this.http.get(`${this.url}/${id}/logs?sort=time,desc`)
+    return Observable.timer(0, 5000)
+      .flatMapTo(this.http.get(`${this.url}/${id}/logs?sort=time,desc`))
       .map(resp => resp.json()._embedded.logs as Log[]);
   }
 

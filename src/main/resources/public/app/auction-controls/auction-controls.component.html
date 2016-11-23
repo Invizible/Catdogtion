@@ -3,6 +3,8 @@
     <h3 class="panel-title">Auction controls</h3>
   </div>
   <div class="panel-body">
+    <p class="lead">Participants have <span class="label label-danger"><ng-timer [startTime]="10"></ng-timer></span> for bet</p>
+
     <form class="form-inline" (ngSubmit)="makeABet()">
       <span>Highest bet amount: {{auction.highestPrice | currency:'UAH'}}</span>
 

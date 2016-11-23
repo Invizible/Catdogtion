@@ -25,6 +25,7 @@ import { MarkdownToHtmlPipe } from './markdown-to-html.pipe';
 import { AuctionService } from './auction.service';
 import { StompService } from './stomp.service';
 import { AuctionControlsComponent } from './auction-controls/auction-controls.component';
+import { NgTimerComponent } from './ng-timer/ng-timer.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { AuctionControlsComponent } from './auction-controls/auction-controls.co
     LotDetailsComponent,
     LotModalComponent,
     MarkdownToHtmlPipe,
-    AuctionControlsComponent
+    AuctionControlsComponent,
+    NgTimerComponent
   ],
   imports: [
     BrowserModule,

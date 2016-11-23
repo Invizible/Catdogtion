@@ -4,3 +4,4 @@
 
 declare var System: any;
 declare module 'marked';
+declare module 'moment';
