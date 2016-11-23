@@ -64,8 +64,13 @@ public class AuctionScheduler {
 
   @EventListener
   public void scheduleAuctionTimeout(StartedAuctionEvent auctionEvent) {
+    Auction auction = auctionEvent.getAuction();
+
     taskScheduler.schedule(
-      () -> auctionService.announceWinnerOrCloseAuctionDueToBetTimeout(auctionEvent.getAuction()),
+      () -> {
+        betTimeoutScheduledFutures.remove(auction.getId());
+        auctionService.announceWinnerOrCloseAuctionDueToBetTimeout(auction);
+      },
       new PeriodicTrigger(auctionTimeoutInMinutes, TimeUnit.MINUTES));
   }
 
