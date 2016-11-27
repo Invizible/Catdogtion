@@ -5,7 +5,6 @@ import { Auction } from './auction';
 import { StompService } from './stomp.service';
 import { Log } from './log';
 import { Bet } from './bet';
-import { User } from './user';
 
 @Injectable()
 export class AuctionService {
@@ -21,8 +20,8 @@ export class AuctionService {
       .map(this.transformResponseToAuction());
   }
 
-  getStartedAuctions(): Observable<Auction> {
-    return this.stompService.connect('/user/queue/startedAuction');
+  getStartedAuctions(callback): void {
+    this.stompService.subscribe('/user/queue/startedAuction', callback);
   }
 
   private transformResponseToAuction() {
@@ -39,7 +38,7 @@ export class AuctionService {
     return this.http.post(`${this.url}/${auctionId}/bets`, bet);
   }
 
-  getWinner(auctionId: number): Observable<Auction> {
-    return this.stompService.connect(`/topic/auction/${auctionId}/auctionWinner`);
+  getWinner(auctionId: number, callback) {
+    return this.stompService.subscribe(`/topic/auction/${auctionId}/auctionWinner`, callback);
   }
 }

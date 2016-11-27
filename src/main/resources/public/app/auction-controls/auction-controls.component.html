@@ -3,7 +3,7 @@
     <h3 class="panel-title">Auction controls</h3>
   </div>
   <div class="panel-body">
-    <p class="lead">Participants have <span class="label label-danger"><ng-timer [startTime]="10"></ng-timer></span> for a bet</p>
+    <p class="lead">Participants have <span class="label label-danger"><ng-timer [startTime]="60"></ng-timer></span> for a bet</p>
 
     <form class="form-inline" (ngSubmit)="makeBet()">
       <span>Highest bet amount: {{auction.highestPrice | currency:'UAH'}}</span>
@@ -23,7 +23,7 @@
   </div>
 </div>
 
-<div class="jumbotron" *ngIf="winner">
+<div class="jumbotron" *ngIf="auction.winner">
   <h2 class="text-center">We have a winner!</h2>
 
   <div class="media">
@@ -31,7 +31,7 @@
       <img src="{{randomWinnerGifPath}}" class="media-object">
     </div>
     <div class="media-body">
-      <p>{{winner.firstName}} {{winner.lastName}} won this auction</p>
+      <p>{{auction.winner.firstName}} {{auction.winner.lastName}} won this auction</p>
     </div>
   </div>
 </div>

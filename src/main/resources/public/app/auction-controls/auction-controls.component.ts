@@ -1,21 +1,20 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Log } from '../log';
 import { Auction } from '../auction';
 import { AuctionService } from '../auction.service';
 import { Observable } from 'rxjs';
 import { Bet } from '../bet';
 import * as _random from 'lodash/random';
-import { User } from '../user';
 
 @Component({
   selector: 'auction-controls',
   templateUrl: 'auction-controls.component.html'
 })
-export class AuctionControlsComponent implements OnInit {
+export class AuctionControlsComponent implements OnInit, OnDestroy {
   logs: Observable<Log[]>;
   bet: Bet = new Bet();
-  winner: User;
   randomWinnerGifPath: string;
+  private winnerSubscription;
 
   @Input()
   auction: Auction;
@@ -26,9 +25,12 @@ export class AuctionControlsComponent implements OnInit {
 
   ngOnInit() {
     this.logs = this.auctionService.getLogsForAuction(this.auction.id);
-    this.winner = this.auction.winner;
     this.randomWinnerGifPath = this.getRandomWinnerGifPath();
-    this.auctionService.getWinner(this.auction.id).subscribe(auction => this.winner = auction.winner);
+    this.winnerSubscription = this.auctionService.getWinner(this.auction.id, auction => this.auction = auction);
+  }
+
+  ngOnDestroy() {
+    this.winnerSubscription.unsubscribe();
   }
 
   auctionHasStarted(): boolean {

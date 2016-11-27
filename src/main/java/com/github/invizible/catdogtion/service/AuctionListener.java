@@ -23,7 +23,7 @@ public class AuctionListener {
   public void handleStartedAuctionEvent(StartedAuctionEvent startedAuctionEvent) {
     Auction startedAuction = startedAuctionEvent.getAuction();
 
-    log.info(String.format("Pushing started auction to the front: %s", startedAuction));
+    log.info(String.format("Pushing started auction to the front: %d", startedAuction.getId()));
 
     sendToParticipants(STARTED_AUCTION_DESTINATION, startedAuction);
   }
@@ -38,7 +38,7 @@ public class AuctionListener {
   public void handleAuctionWinnerEvent(AuctionWinnerEvent winnerEvent) {
     Auction auction = winnerEvent.getAuction();
 
-    log.info(String.format("Pushing auction withWinner to the front: %s", auction));
+    log.info(String.format("Pushing auction withWinner to the front: %d", auction.getId()));
 
     messagingTemplate.convertAndSend(String.format(AUCTION_WINNER_DESTINATION, auction.getId()), auction);
   }

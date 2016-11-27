@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable';
 import * as Stomp from 'stompjs';
 
 @Injectable()
@@ -16,21 +14,21 @@ export class StompService {
     return ((l.protocol === "https:") ? "wss://" : "ws://") + l.host + l.pathname + s;
   }
 
-  public connect(endpointUrl: string): Observable<any> {
-    let stompSubject : Subject<any> = new Subject<any>();
-
-    this.stompClient.connect({}, () => {
-      this.stompClient.subscribe(endpointUrl, (stompResponse) => {
-        // stompResponse = {command, headers, body with JSON
-        // reflecting the object returned by Spring framework}
-        stompSubject.next(JSON.parse(stompResponse.body));
-      });
-    });
-
-    return stompSubject.asObservable();
+  send(url: string, payload: string) {
+    this.stompClient.send(url, {}, JSON.stringify({'inputField': payload}));
   }
 
-  public send(url: string, payload: string) {
-    this.stompClient.send(url, {}, JSON.stringify({'inputField': payload}));
+  subscribe(destination: string, callback) {
+    let subscribeCallback = () => this.stompClient.subscribe(destination, (stompResponse) => {
+      // stompResponse = {command, headers, body with JSON
+      // reflecting the object returned by Spring framework}
+      callback(JSON.parse(stompResponse.body));
+    });
+
+    if (this.stompClient.connected) {
+      return subscribeCallback();
+    }
+
+    return this.stompClient.connect({}, subscribeCallback);
   }
 }
