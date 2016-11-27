@@ -63,14 +63,12 @@ public class AuctionScheduler {
       Date.from(savedAuction.getStartDate().toInstant()));
   }
 
-  //TODO: should be run only once
   @EventListener
   public void scheduleAuctionTimeout(StartedAuctionEvent auctionEvent) {
     scheduleTimeoutTask(
       auctionEvent,
       auctionTimeoutInMinutes,
-      auctionTimeoutScheduledFutures,
-      betTimeoutScheduledFutures
+      auctionTimeoutScheduledFutures
     );
   }
 
@@ -79,22 +77,21 @@ public class AuctionScheduler {
     scheduleTimeoutTask(
       auctionEvent,
       betTimeoutInMinutes,
-      betTimeoutScheduledFutures,
-      auctionTimeoutScheduledFutures
+      betTimeoutScheduledFutures
     );
   }
 
   private void scheduleTimeoutTask(
     StartedAuctionEvent auctionEvent,
     int timeoutInMinutes,
-    Map<Long, ScheduledFuture<?>> scheduledFutures,
-    Map<Long, ScheduledFuture<?>> cancelFutures) {
+    Map<Long, ScheduledFuture<?>> scheduledFutures) {
 
     Auction auction = auctionEvent.getAuction();
 
     ScheduledFuture<?> future = taskScheduler.schedule(
       () -> {
-        cancelTask(auction, cancelFutures);
+        cancelTask(auction, auctionTimeoutScheduledFutures);
+        cancelTask(auction, betTimeoutScheduledFutures);
         auctionService.announceWinnerOrCloseAuctionDueToBetTimeout(auction);
       },
       createPeriodicTrigger(timeoutInMinutes));

@@ -14,7 +14,7 @@
           <div class="input-group-addon">&#8372;</div>
           <input type="number" class="form-control" id="betAmount"
                  [(ngModel)]="bet.bet" name="bet" required
-                 [placeholder]="auction.highestPrice + 1">
+                 placeholder="Enter your bet">
           <div class="input-group-addon">.00</div>
         </div>
       </div>
@@ -28,7 +28,7 @@
 
   <div class="media">
     <div class="media-left">
-      <img src="{{getRandomWinnerGifPath()}}" class="media-object">
+      <img src="{{randomWinnerGifPath}}" class="media-object">
     </div>
     <div class="media-body">
       <p>{{winner.firstName}} {{winner.lastName}} won this auction</p>

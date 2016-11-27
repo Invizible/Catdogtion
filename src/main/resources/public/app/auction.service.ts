@@ -30,7 +30,7 @@ export class AuctionService {
   }
 
   getLogsForAuction(id: number): Observable<Log[]> {
-    return Observable.timer(0, 5000)
+    return Observable.timer(0, 3000)
       .flatMapTo(this.http.get(`${this.url}/${id}/logs?sort=time,desc`))
       .map(resp => resp.json()._embedded.logs as Log[]);
   }
@@ -39,7 +39,7 @@ export class AuctionService {
     return this.http.post(`${this.url}/${auctionId}/bets`, bet);
   }
 
-  getWinner(auctionId: number): Observable<User> {
+  getWinner(auctionId: number): Observable<Auction> {
     return this.stompService.connect(`/topic/auction/${auctionId}/auctionWinner`);
   }
 }

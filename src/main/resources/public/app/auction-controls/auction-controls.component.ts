@@ -15,6 +15,7 @@ export class AuctionControlsComponent implements OnInit {
   logs: Observable<Log[]>;
   bet: Bet = new Bet();
   winner: User;
+  randomWinnerGifPath: string;
 
   @Input()
   auction: Auction;
@@ -25,7 +26,9 @@ export class AuctionControlsComponent implements OnInit {
 
   ngOnInit() {
     this.logs = this.auctionService.getLogsForAuction(this.auction.id);
-    this.auctionService.getWinner(this.auction.id).subscribe(winner => this.winner = winner);
+    this.winner = this.auction.winner;
+    this.randomWinnerGifPath = this.getRandomWinnerGifPath();
+    this.auctionService.getWinner(this.auction.id).subscribe(auction => this.winner = auction.winner);
   }
 
   auctionHasStarted(): boolean {
@@ -42,7 +45,7 @@ export class AuctionControlsComponent implements OnInit {
     );
   }
 
-  getRandomWinnerGifPath(): string {
+  private getRandomWinnerGifPath(): string {
     return `../../assets/winner-${_random(1, 6)}.gif`;
   }
 }
