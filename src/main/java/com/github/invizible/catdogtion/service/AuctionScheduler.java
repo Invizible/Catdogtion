@@ -39,6 +39,7 @@ public class AuctionScheduler {
   private int auctionTimeoutInMinutes;
 
   private Map<Long, ScheduledFuture<?>> betTimeoutScheduledFutures = new ConcurrentHashMap<>();
+  private Map<Long, ScheduledFuture<?>> auctionTimeoutScheduledFutures = new ConcurrentHashMap<>();
 
   @PostConstruct
   public void closeExpiredAuctions() {
@@ -62,38 +63,64 @@ public class AuctionScheduler {
       Date.from(savedAuction.getStartDate().toInstant()));
   }
 
+  //TODO: should be run only once
   @EventListener
   public void scheduleAuctionTimeout(StartedAuctionEvent auctionEvent) {
-    Auction auction = auctionEvent.getAuction();
-
-    taskScheduler.schedule(
-      () -> {
-        betTimeoutScheduledFutures.remove(auction.getId());
-        auctionService.announceWinnerOrCloseAuctionDueToBetTimeout(auction);
-      },
-      new PeriodicTrigger(auctionTimeoutInMinutes, TimeUnit.MINUTES));
+    scheduleTimeoutTask(
+      auctionEvent,
+      auctionTimeoutInMinutes,
+      auctionTimeoutScheduledFutures,
+      betTimeoutScheduledFutures
+    );
   }
 
   @EventListener
   public void scheduleBetTimeout(StartedAuctionEvent auctionEvent) {
+    scheduleTimeoutTask(
+      auctionEvent,
+      betTimeoutInMinutes,
+      betTimeoutScheduledFutures,
+      auctionTimeoutScheduledFutures
+    );
+  }
+
+  private void scheduleTimeoutTask(
+    StartedAuctionEvent auctionEvent,
+    int timeoutInMinutes,
+    Map<Long, ScheduledFuture<?>> scheduledFutures,
+    Map<Long, ScheduledFuture<?>> cancelFutures) {
+
     Auction auction = auctionEvent.getAuction();
 
     ScheduledFuture<?> future = taskScheduler.schedule(
-      () -> auctionService.announceWinnerOrCloseAuctionDueToBetTimeout(auction),
-      new PeriodicTrigger(betTimeoutInMinutes, TimeUnit.MINUTES));
+      () -> {
+        cancelTask(auction, cancelFutures);
+        auctionService.announceWinnerOrCloseAuctionDueToBetTimeout(auction);
+      },
+      createPeriodicTrigger(timeoutInMinutes));
 
-    betTimeoutScheduledFutures.put(auction.getId(), future);
+    scheduledFutures.put(auction.getId(), future);
+  }
+
+  private PeriodicTrigger createPeriodicTrigger(int timeout) {
+    PeriodicTrigger trigger = new PeriodicTrigger(timeout, TimeUnit.MINUTES);
+    trigger.setInitialDelay(timeout);
+    return trigger;
   }
 
   @EventListener
   public void cancelAndRescheduleBetTimeoutTask(RescheduleBetTimeoutTaskEvent rescheduleEvent) {
     Auction auction = rescheduleEvent.getAuction();
-    ScheduledFuture<?> future = betTimeoutScheduledFutures.get(auction.getId());
+    cancelTask(auction, betTimeoutScheduledFutures);
+
+    scheduleBetTimeout(new StartedAuctionEvent(auction));
+  }
+
+  private void cancelTask(Auction auction, Map<Long, ScheduledFuture<?>> scheduledFutures) {
+    ScheduledFuture<?> future = scheduledFutures.remove(auction.getId());
     if (future != null) {
       future.cancel(false);
     }
-
-    scheduleBetTimeout(new StartedAuctionEvent(auction));
   }
 
 }

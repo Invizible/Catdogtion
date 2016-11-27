@@ -5,6 +5,7 @@ import { Auction } from './auction';
 import { StompService } from './stomp.service';
 import { Log } from './log';
 import { Bet } from './bet';
+import { User } from './user';
 
 @Injectable()
 export class AuctionService {
@@ -36,5 +37,9 @@ export class AuctionService {
 
   makeABet(auctionId: number, bet: Bet): Observable<any> {
     return this.http.post(`${this.url}/${auctionId}/bets`, bet);
+  }
+
+  getWinner(auctionId: number): Observable<User> {
+    return this.stompService.connect(`/topic/auction/${auctionId}/auctionWinner`);
   }
 }

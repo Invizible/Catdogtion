@@ -30,6 +30,7 @@ public class AuctionService {
   private static final String THE_AUCTION_WAS_CLOSED_LOG = "The auction was closed due to low participants count";
   private static final String THE_AUCTION_HAS_STARTED_LOG = "The auction has just started. Starting price is: %s";
   private static final String BET_TIMEOUT_CLOSE_AUCTION_LOG_MESSAGE = "An auction was closed because no one made a bet";
+  private static final String WINNER_LOG = "%s is the winner";
 
   @Autowired
   private AuctionRepository auctionRepository;
@@ -73,11 +74,21 @@ public class AuctionService {
 
   public void announceWinnerOrCloseAuctionDueToBetTimeout(Auction auction) {
     if (isLastBetBiggerThanStartingPrice(auction)) {
-//      auction.setWinner(); TODO: set winner
-      applicationEventPublisher.publishEvent(new AuctionWinnerEvent(auction));
+      Auction closedAuction = setWinnerAndCloseAuction(auction);
+      emailService.sendAuctionWinnerNotificationToParticipant(closedAuction);
+      emailService.sendAuctionWinnerNotificationToAuctioneer(closedAuction);
+      applicationEventPublisher.publishEvent(new AuctionWinnerEvent(closedAuction));
     } else {
       disableLotAndCloseAuction(auction, new Log(BET_TIMEOUT_CLOSE_AUCTION_LOG_MESSAGE));
     }
+  }
+
+  private Auction setWinnerAndCloseAuction(Auction auction) {
+    User winner = userRepository.findCurrentUser();
+    auction.setWinner(winner);
+
+    Log log = new Log(String.format(WINNER_LOG, winner.getFullName()));
+    return closeAuction(auction, log);
   }
 
   private boolean isLastBetBiggerThanStartingPrice(Auction auction)
@@ -107,14 +118,14 @@ public class AuctionService {
     lotRepository.save(lot);
   }
 
-  private void closeAuction(Auction auction, Log closeAuctionLog) {
+  private Auction closeAuction(Auction auction, Log closeAuctionLog) {
     log.info(String.format("Closing auction: %d", auction.getId()));
 
     Log log = logRepository.save(closeAuctionLog);
     auction.getLogs().add(log);
     auction.setStatus(AuctionStatus.CLOSED);
     auction.setEndDate(log.getTime());
-    auctionRepository.save(auction);
+    return auctionRepository.save(auction);
   }
 
   public boolean addBet(Long auctionId, BigDecimal newHighestPrice, String currentUserName) {
@@ -132,9 +143,8 @@ public class AuctionService {
   private void saveBet(BigDecimal newHighestPrice, String currentUserName, Auction currentAuction)
   {
     User currentUser = userRepository.findByUsername(currentUserName).get();
-    Log log = new Log(String.format("User %s %s made a bet: %s",
-      currentUser.getFirstName(),
-      currentUser.getLastName(),
+    Log log = new Log(String.format("User %s made a bet: %s",
+      currentUser.getFullName(),
       MoneyUtils.format(newHighestPrice)));
     currentAuction.getLogs().add(log);
     currentAuction.setHighestPrice(newHighestPrice);

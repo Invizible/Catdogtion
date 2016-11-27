@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 public class AuctionListener {
 
   private static final String STARTED_AUCTION_DESTINATION = "/queue/startedAuction";
-  private static final String AUCTION_WINNER_DESTINATION = "/queue/auctionWinner";
+  private static final String AUCTION_WINNER_DESTINATION = "/topic/auction/%s/auctionWinner";
 
   @Autowired
   private SimpMessagingTemplate messagingTemplate;
@@ -40,6 +40,6 @@ public class AuctionListener {
 
     log.info(String.format("Pushing auction withWinner to the front: %s", auction));
 
-    sendToParticipants(AUCTION_WINNER_DESTINATION, auction);
+    messagingTemplate.convertAndSend(String.format(AUCTION_WINNER_DESTINATION, auction.getId()), auction);
   }
 }

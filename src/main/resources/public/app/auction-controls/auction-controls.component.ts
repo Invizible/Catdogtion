@@ -4,6 +4,8 @@ import { Auction } from '../auction';
 import { AuctionService } from '../auction.service';
 import { Observable } from 'rxjs';
 import { Bet } from '../bet';
+import * as _random from 'lodash/random';
+import { User } from '../user';
 
 @Component({
   selector: 'auction-controls',
@@ -12,6 +14,7 @@ import { Bet } from '../bet';
 export class AuctionControlsComponent implements OnInit {
   logs: Observable<Log[]>;
   bet: Bet = new Bet();
+  winner: User;
 
   @Input()
   auction: Auction;
@@ -22,6 +25,7 @@ export class AuctionControlsComponent implements OnInit {
 
   ngOnInit() {
     this.logs = this.auctionService.getLogsForAuction(this.auction.id);
+    this.auctionService.getWinner(this.auction.id).subscribe(winner => this.winner = winner);
   }
 
   auctionHasStarted(): boolean {
@@ -36,5 +40,9 @@ export class AuctionControlsComponent implements OnInit {
     this.auctionService.makeABet(this.auction.id, this.bet).subscribe(
       () => this.auction.highestPrice = this.bet.bet
     );
+  }
+
+  getRandomWinnerGifPath(): string {
+    return `../../assets/winner-${_random(1, 6)}.gif`;
   }
 }

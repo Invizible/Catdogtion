@@ -20,6 +20,7 @@ public class EmailService {
 
   private static final String BASE_URL = "baseUrl";
   private static final String AUCTION_ID = "auctionId";
+  private static final String EMAIL = "email";
 
   @Autowired
   private JavaMailSender javaMailSender;
@@ -57,11 +58,46 @@ public class EmailService {
       .map(User::getEmail)
       .toArray(String[]::new);
 
-    Context context = new Context();
-    context.setVariable(BASE_URL, baseUrl);
-    context.setVariable(AUCTION_ID, auction.getId());
+    Context context = createAuctionNotificationContext(auction);
     String content = templateEngine.process("auctionStartingNotification", context);
 
     sendEmail("Do not miss your auction!", content, emailAddresses);
+  }
+
+  private Context createAuctionNotificationContext(Auction auction) {
+    Context context = new Context();
+    context.setVariable(BASE_URL, baseUrl);
+    context.setVariable(AUCTION_ID, auction.getId());
+    return context;
+  }
+
+  @Async
+  public void sendAuctionWinnerNotificationToParticipant(Auction auction) {
+    log.info(String.format("Sending auction (id: %d) winner notification to the participant", auction.getId()));
+
+    Context context = createAuctionNotificationContext(auction);
+    context.setVariable(EMAIL, getAuctioneerEmail(auction));
+    String content = templateEngine.process("auctionWinnerToParticipantNotification", context);
+
+    sendEmail("There is a winner", content, getWinnerEmail(auction));
+  }
+
+  @Async
+  public void sendAuctionWinnerNotificationToAuctioneer(Auction auction) {
+    log.info(String.format("Sending auction (id: %d) winner notification to the auctioneer", auction.getId()));
+
+    Context context = createAuctionNotificationContext(auction);
+    context.setVariable(EMAIL, getWinnerEmail(auction));
+    String content = templateEngine.process("auctionWinnerToAuctioneerNotification", context);
+
+    sendEmail("There is a winner", content, getAuctioneerEmail(auction));
+  }
+
+  private String getWinnerEmail(Auction auction) {
+    return auction.getWinner().getEmail();
+  }
+
+  private String getAuctioneerEmail(Auction auction) {
+    return auction.getLot().getAuctioneer().getEmail();
   }
 }

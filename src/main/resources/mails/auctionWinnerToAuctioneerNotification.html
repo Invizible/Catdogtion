@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Congratulations!</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<h1>Congratulations</h1>
+<p>Your <a th:href="@{|${baseUrl}/#/lot-details/${auctionId}|}">lot</a> has been sold</p>
+<p>Contact the winner <a th:href="mailto:${email}" th:text="${email}"></a></p>
+
+<p>
+  <span>Regards, </span>
+  <br/>
+  <em>Catdogtion</em>
+</p>
+</body>
+</html>

@@ -64,4 +64,8 @@ public class User {
     inverseJoinColumns =  @JoinColumn(name = "authority_id")
   )
   private Set<Role> roles = new HashSet<>();
+
+  public String getFullName() {
+    return String.format("%s %s", firstName, lastName);
+  }
 }
