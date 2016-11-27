@@ -14,6 +14,8 @@ export class AuctionControlsComponent implements OnInit, OnDestroy {
   logs: Observable<Log[]>;
   bet: Bet = new Bet();
   randomWinnerGifPath: string;
+  betTimeout: number = 60; //TODO: remove hardcode
+  showTimer: boolean = true;
   private winnerSubscription;
 
   @Input()
@@ -42,8 +44,12 @@ export class AuctionControlsComponent implements OnInit, OnDestroy {
   }
 
   makeBet(): void {
+    this.showTimer = false;
     this.auctionService.makeABet(this.auction.id, this.bet).subscribe(
-      () => this.auction.highestPrice = this.bet.bet
+      () => {
+        this.auction.highestPrice = this.bet.bet;
+        this.showTimer = true;
+      }
     );
   }
 
